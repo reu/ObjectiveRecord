@@ -26,11 +26,11 @@
         if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
             if (sqlite3_open([path UTF8String], &database) != SQLITE_OK) {
                 [NSException raise:@"The informed path is not a valid sqlite3 database" 
-                            format:@"couldn't connect to %d", path];
+                            format:@"couldn't connect to %@", path];
             }
         } else {
             [NSException raise:@"You must specify the path to a pre-existing sqlite database" 
-                         format:@"%d is not a sqlite database", path];
+                         format:@"%@ is not a sqlite database", path];
         }
     }
     
@@ -81,7 +81,7 @@
     
     if (result != SQLITE_OK || query == NULL) {
         [NSException raise:@"Error while preparing the sqlite query" 
-                    format:@"could not prepare %d", sql];
+                    format:@"could not prepare %@", sql];
     }
     
     return query;

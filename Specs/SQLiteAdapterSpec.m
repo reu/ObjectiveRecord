@@ -32,7 +32,7 @@ describe(@"initWithPath", ^{
         it(@"raises an error", ^{
             [[theBlock(^{
                 [[SQLiteAdapter alloc] initWithPath:@"lol.wut"];
-            }) should] raise];
+            }) should] raiseWithReason:@"lol.wut is not a sqlite database"];
         });
     });
 });
