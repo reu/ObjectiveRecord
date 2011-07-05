@@ -8,6 +8,16 @@
 
 #import "SQLiteAdapter.h"
 
+@interface SQLiteAdapter()
+
+- (sqlite3_stmt *)prepareQuery:(NSString *)sql;
+
+- (NSArray *)columnsForQuery:(sqlite3_stmt *)query;
+
+- (id)castedValueForColumnIndex:(int)columnIndex forQuery:(sqlite3_stmt *)query;
+
+@end
+
 
 @implementation SQLiteAdapter
 
@@ -28,6 +38,38 @@
 - (id)connection {
     return (id)database;
 }
+
+- (NSArray *)executeQuery:(NSString *)sql {
+    sqlite3_stmt *query;
+    query = [self prepareQuery:sql];
+    
+    NSArray *columns = [self columnsForQuery:query];
+    NSMutableArray *rows = [NSMutableArray array];
+    
+    while (sqlite3_step(query) == SQLITE_ROW) {
+        NSMutableDictionary *row = [NSMutableDictionary dictionary];
+        
+        int columnIndex = 0;
+        
+        for (NSString *column in columns) {
+            [row setObject:[self castedValueForColumnIndex:columnIndex forQuery:query]
+                    forKey:column];
+            
+            columnIndex++;
+        }
+        
+        [rows addObject:row];
+    }
+    
+    return rows;
+}
+
+- (void)dealloc {
+    sqlite3_close(database);
+}
+
+#pragma mark -
+#pragma mark Private methods
 
 - (sqlite3_stmt *)prepareQuery:(NSString *)sql {
     sqlite3_stmt *query;
@@ -75,35 +117,6 @@
     }
     
     return nil;
-}
-
-- (NSArray *)executeQuery:(NSString *)sql {
-    sqlite3_stmt *query;
-    query = [self prepareQuery:sql];
-    
-    NSArray *columns = [self columnsForQuery:query];
-    NSMutableArray *rows = [NSMutableArray array];
-    
-    while (sqlite3_step(query) == SQLITE_ROW) {
-        NSMutableDictionary *row = [NSMutableDictionary dictionary];
-        
-        int columnIndex = 0;
-        
-        for (NSString *column in columns) {
-            [row setObject:[self castedValueForColumnIndex:columnIndex forQuery:query]
-                    forKey:column];
-            
-            columnIndex++;
-        }
-        
-        [rows addObject:row];
-    }
-    
-    return rows;
-}
-
-- (void)dealloc {
-    sqlite3_close(database);
 }
 
 @end
