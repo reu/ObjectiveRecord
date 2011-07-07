@@ -16,6 +16,8 @@
 
 - (id)castedValueForColumnIndex:(int)columnIndex forQuery:(sqlite3_stmt *)query;
 
+- (NSDate *)parseDateTime:(NSString *)dateTime;
+
 @end
 
 
@@ -101,15 +103,26 @@
 }
 
 - (id)castedValueForColumnIndex:(int)columnIndex forQuery:(sqlite3_stmt *)query {    
+    NSString *columnValue;
+    
     switch (sqlite3_column_type(query, columnIndex)) {
         case SQLITE_INTEGER:
             return [NSNumber numberWithInt:sqlite3_column_int(query, columnIndex)];
             break;
         case SQLITE_FLOAT:
-            [NSNumber numberWithDouble:sqlite3_column_double(query, columnIndex)];
+            return [NSNumber numberWithDouble:sqlite3_column_double(query, columnIndex)];
             break;
         case SQLITE_TEXT:
-            return [NSString stringWithUTF8String:(const char *)sqlite3_column_text(query, columnIndex)];
+            columnValue = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(query, columnIndex)];
+            
+            NSString *columnType = [[NSString stringWithUTF8String:(const char *)sqlite3_column_decltype(query, columnIndex)] lowercaseString];
+            
+            if ([columnType isEqualToString:@"datetime"]) {
+                return [self parseDateTime:columnValue];
+            } else {
+                return columnValue;
+            }
+            
             break;
         case SQLITE_NULL:
             return nil;
@@ -119,6 +132,17 @@
     }
     
     return nil;
+}
+
+- (NSDate *)parseDateTime:(NSString *)dateTime {
+    NSDateFormatter *formater = [[NSDateFormatter alloc] init];
+    [formater setDateFormat:@"yyyy-mm-dd HH:mm:ss"];
+    
+    NSDate *parsedDateTime = [formater dateFromString:dateTime];
+    
+    [formater release];
+    
+    return parsedDateTime;
 }
 
 @end

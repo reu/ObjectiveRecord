@@ -38,21 +38,12 @@ describe(@"initWithPath", ^{
 });
 
 describe(@"executeQuery", ^{
-    __block SQLiteAdapter *adapter = [[SQLiteAdapter alloc] initWithPath:@"Specs/Fixtures/test.db"];
+    __block SQLiteAdapter *adapter = [[SQLiteAdapter alloc] initWithPath:@"Specs/Fixtures/users.db"];
     
     context(@"that returns two rows", ^{
-        beforeAll(^{
-            [adapter executeQuery:@"DELETE FROM user"];
-            [adapter executeQuery:@"INSERT INTO user (name, age) VALUES ('Rodrigo', 25)"];
-            [adapter executeQuery:@"INSERT INTO user (name, age) VALUES ('Marília', 28)"];
-        });
-        
-        it(@"returns an array with two dictionaries", ^{
-            NSArray *rows = [adapter executeQuery:@"SELECT name, age FROM user"];
-            
-            [[rows should] haveCountOf:2];
-            [[[rows objectAtIndex:0] should] beKindOfClass:[NSDictionary class]];
-        });
+        [adapter executeQuery:@"DELETE FROM user"];
+        [adapter executeQuery:@"INSERT INTO user (name, age, created_at) VALUES ('Rodrigo', 25, '2010-01-01 00:02:03')"];
+        [adapter executeQuery:@"INSERT INTO user (name, age, created_at) VALUES ('Marília', 28, '2010-10-01 10:00:00')"];
         
         describe(@"the first row", ^{
             __block NSArray *rows = [adapter executeQuery:@"SELECT * FROM user"];
@@ -65,11 +56,14 @@ describe(@"executeQuery", ^{
             it(@"returns 25 as its age", ^{
                 [[[row objectForKey:@"age"] should] equal:[NSNumber numberWithInt:25]];
             });
+            
+            it(@"returns the an NSDate object", ^{
+                [[[row objectForKey:@"created_at"] should] beKindOfClass:[NSDate class]];
+            });
         });
     });
     
     afterAll(^{
-        [adapter executeQuery:@"DELETE FROM user"];
         [adapter release];
     });
 });
