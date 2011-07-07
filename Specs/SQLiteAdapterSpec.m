@@ -48,13 +48,21 @@ describe(@"initWithPath", ^{
         });
     });
     
-    it(@"supports in memory database", ^{
+    context(@"when :memory: is informed", ^{
+        it(@"doesn't create a file, as it should be a in memory database", ^{
+            [[SQLiteAdapter alloc] initWithPath:@":memory:"];
+
+            BOOL databaseFileCreated = [[NSFileManager defaultManager] fileExistsAtPath:@":memory:"];
+            [[theValue(databaseFileCreated) should] beFalse];
+        });
+    });
+});
+
+describe(@"initWithInMemoryDatabase", ^{
+    it(@"inits an in memory database", ^{
         [[theBlock(^{
             [[SQLiteAdapter alloc] initWithInMemoryDatabase];
         }) shouldNot] raise];
-        
-        BOOL databaseFileCreated = [[NSFileManager defaultManager] fileExistsAtPath:@":memory:"];
-        [[theValue(databaseFileCreated) should] beFalse];
     });
 });
 
