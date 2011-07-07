@@ -20,19 +20,26 @@ describe(@"initWithPath", ^{
         });
     });
     
-    pending(@"when the path points to an invalid database", ^{
-        it(@"raises an error", ^{
-            [[theBlock(^{
-                [[SQLiteAdapter alloc] initWithPath:@"Specs/Fixtures/nosqlite.db"];
-            }) should] raise];
+    context(@"when the path points to an unexistent database", ^{
+        __block NSString *unexistentDatabasePath = @"Specs/Fixtures/unexistent.db";
+        __block NSFileManager *fileManager = [NSFileManager defaultManager];
+        
+        afterEach(^{
+            if ([fileManager fileExistsAtPath:unexistentDatabasePath]) {
+                [fileManager removeItemAtPath:unexistentDatabasePath error:nil];
+            }
         });
-    });
-    
-    context(@"when the path points to an invalid path", ^{
-        it(@"raises an error", ^{
+        
+        it(@"successfully instantiates the class", ^{
             [[theBlock(^{
-                [[SQLiteAdapter alloc] initWithPath:@"lol.wut"];
-            }) should] raiseWithReason:@"lol.wut is not a sqlite database"];
+                [[SQLiteAdapter alloc] initWithPath:unexistentDatabasePath];
+            }) shouldNot] raise];
+        });
+        
+        it(@"automatically creates the database file", ^{
+            [[SQLiteAdapter alloc] initWithPath:unexistentDatabasePath];
+            BOOL fileExists = [fileManager fileExistsAtPath:unexistentDatabasePath];
+            [[theValue(fileExists) should] beTrue];
         });
     });
 });

@@ -27,14 +27,9 @@
 
 - (id)initWithPath:(NSString *)path {
     if (self = [super init]) {
-        if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
-            if (sqlite3_open([path UTF8String], &database) != SQLITE_OK) {
-                [NSException raise:@"The informed path is not a valid sqlite3 database" 
-                            format:@"couldn't connect to %@", path];
-            }
-        } else {
-            [NSException raise:@"You must specify the path to a pre-existing sqlite database" 
-                         format:@"%@ is not a sqlite database", path];
+        if (sqlite3_open([path UTF8String], &database) != SQLITE_OK) {
+            [NSException raise:@"The informed path is not a valid sqlite3 database" 
+                        format:@"couldn't connect to %@", path];
         }
     }
     
