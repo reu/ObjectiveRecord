@@ -42,6 +42,15 @@ describe(@"initWithPath", ^{
             [[theValue(fileExists) should] beTrue];
         });
     });
+    
+    it(@"supports in memory database", ^{
+        [[theBlock(^{
+            [[SQLiteAdapter alloc] initWithPath:@":memory:"];
+        }) shouldNot] raise];
+        
+        BOOL databaseFileCreated = [[NSFileManager defaultManager] fileExistsAtPath:@":memory:"];
+        [[theValue(databaseFileCreated) should] beFalse];
+    });
 });
 
 describe(@"executeQuery", ^{
