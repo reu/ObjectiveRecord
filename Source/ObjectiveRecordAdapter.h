@@ -11,7 +11,6 @@
 @protocol ObjectiveRecordAdapter
 
 - (id)initWithPath:(NSString *)path;
-- (id)initWithInMemoryDatabase;
 - (id)connection;
 - (NSArray *)executeQuery:(NSString *)sql;
 
