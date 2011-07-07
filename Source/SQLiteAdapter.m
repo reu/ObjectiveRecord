@@ -16,6 +16,8 @@
 
 - (id)castedValueForColumnIndex:(int)columnIndex forQuery:(sqlite3_stmt *)query;
 
+- (NSDate *)parseDate:(NSString *)date;
+
 - (NSDate *)parseDateTime:(NSString *)dateTime;
 
 @end
@@ -119,6 +121,8 @@
             
             if ([columnType isEqualToString:@"datetime"]) {
                 return [self parseDateTime:columnValue];
+            } else if([columnType isEqualToString:@"date"]) {
+                return [self parseDate:columnValue];
             } else {
                 return columnValue;
             }
@@ -145,4 +149,14 @@
     return parsedDateTime;
 }
 
+- (NSDate *)parseDate:(NSString *)date {
+   NSDateFormatter *formater = [[NSDateFormatter alloc] init];
+   [formater setDateFormat:@"yyyy-mm-dd"];
+   
+   NSDate *parsedDate = [formater dateFromString:date];
+   
+   [formater release];
+   
+   return parsedDate;
+}
 @end
