@@ -36,6 +36,10 @@
     return self;
 }
 
+- (id)initWithInMemoryDatabase {
+    return [self initWithPath:@":memory:"];
+}
+
 - (id)connection {
     return (id)database;
 }

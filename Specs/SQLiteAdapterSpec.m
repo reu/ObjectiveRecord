@@ -45,7 +45,7 @@ describe(@"initWithPath", ^{
     
     it(@"supports in memory database", ^{
         [[theBlock(^{
-            [[SQLiteAdapter alloc] initWithPath:@":memory:"];
+            [[SQLiteAdapter alloc] initWithInMemoryDatabase];
         }) shouldNot] raise];
         
         BOOL databaseFileCreated = [[NSFileManager defaultManager] fileExistsAtPath:@":memory:"];
@@ -54,7 +54,7 @@ describe(@"initWithPath", ^{
 });
 
 describe(@"executeQuery", ^{
-    __block SQLiteAdapter *adapter = [[SQLiteAdapter alloc] initWithPath:@":memory:"];
+    __block SQLiteAdapter *adapter = [[SQLiteAdapter alloc] initWithInMemoryDatabase];
     
     context(@"that returns two rows", ^{
         [adapter executeQuery:@"CREATE TABLE user (id INTEGER PRIMARY KEY, name VARCHAR(255), age INTEGER, created_at DATETIME, birthday DATE)"];
