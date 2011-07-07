@@ -69,6 +69,8 @@
 		2C43285D13C2929900F4397B /* SQLiteAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C43285A13C2929900F4397B /* SQLiteAdapter.h */; };
 		2C43285E13C2929900F4397B /* SQLiteAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C43285B13C2929900F4397B /* SQLiteAdapter.m */; };
 		2C43286013C292F600F4397B /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C43285F13C292F600F4397B /* libsqlite3.dylib */; };
+		2CC9CBD813C672F1000781E2 /* ObjectiveRecordAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 2CC9CBD713C672F1000781E2 /* ObjectiveRecordAdapter.h */; };
+		2CC9CBD913C672F1000781E2 /* ObjectiveRecordAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 2CC9CBD713C672F1000781E2 /* ObjectiveRecordAdapter.h */; };
 		AA747D9F0F9514B9006C5449 /* ObjectiveRecord_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = AA747D9E0F9514B9006C5449 /* ObjectiveRecord_Prefix.pch */; };
 		AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
 /* End PBXBuildFile section */
@@ -205,6 +207,7 @@
 		2C43285A13C2929900F4397B /* SQLiteAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SQLiteAdapter.h; path = Source/SQLiteAdapter.h; sourceTree = "<group>"; };
 		2C43285B13C2929900F4397B /* SQLiteAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SQLiteAdapter.m; path = Source/SQLiteAdapter.m; sourceTree = "<group>"; };
 		2C43285F13C292F600F4397B /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		2CC9CBD713C672F1000781E2 /* ObjectiveRecordAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ObjectiveRecordAdapter.h; path = Source/ObjectiveRecordAdapter.h; sourceTree = "<group>"; };
 		AA747D9E0F9514B9006C5449 /* ObjectiveRecord_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectiveRecord_Prefix.pch; sourceTree = SOURCE_ROOT; };
 		AACBBE490F95108600F1A2B1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D2AAC07E0554694100DB518D /* libObjectiveRecord.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libObjectiveRecord.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -265,6 +268,7 @@
 		08FB77AEFE84172EC02AAC07 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				2CC9CBD713C672F1000781E2 /* ObjectiveRecordAdapter.h */,
 				2C43285A13C2929900F4397B /* SQLiteAdapter.h */,
 				2C43285B13C2929900F4397B /* SQLiteAdapter.m */,
 			);
@@ -422,12 +426,21 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		2CC9CBDA13C672F1000781E2 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2CC9CBD813C672F1000781E2 /* ObjectiveRecordAdapter.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D2AAC07A0554694100DB518D /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				AA747D9F0F9514B9006C5449 /* ObjectiveRecord_Prefix.pch in Headers */,
 				2C43285D13C2929900F4397B /* SQLiteAdapter.h in Headers */,
+				2CC9CBD913C672F1000781E2 /* ObjectiveRecordAdapter.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -442,6 +455,7 @@
 				2C43278313C28F9D00F4397B /* Sources */,
 				2C43278413C28F9D00F4397B /* Frameworks */,
 				2C43278513C28F9D00F4397B /* ShellScript */,
+				2CC9CBDA13C672F1000781E2 /* Headers */,
 			);
 			buildRules = (
 			);

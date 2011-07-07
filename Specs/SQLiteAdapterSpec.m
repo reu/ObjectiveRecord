@@ -8,8 +8,13 @@
 
 #import "Kiwi.h"
 #import "SQLiteAdapter.h"
+#import "ObjectiveRecordAdapter.h"
 
 SPEC_BEGIN(SQLiteAdapterSpec)
+
+it(@"implements the ObjectiveRecordAdapter protocol", ^{
+    [[SQLiteAdapter should] conformToProtocol:@protocol(ObjectiveRecordAdapter)];
+});
 
 describe(@"initWithPath", ^{
     context(@"when the path points to an existent database", ^{
