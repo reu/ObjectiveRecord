@@ -54,10 +54,10 @@ describe(@"initWithPath", ^{
 });
 
 describe(@"executeQuery", ^{
-    __block SQLiteAdapter *adapter = [[SQLiteAdapter alloc] initWithPath:@"Specs/Fixtures/users.db"];
+    __block SQLiteAdapter *adapter = [[SQLiteAdapter alloc] initWithPath:@":memory:"];
     
     context(@"that returns two rows", ^{
-        [adapter executeQuery:@"DELETE FROM user"];
+        [adapter executeQuery:@"CREATE TABLE user (id INTEGER PRIMARY KEY, name VARCHAR(255), age INTEGER, created_at DATETIME, birthday DATE)"];
         [adapter executeQuery:@"INSERT INTO user (name, age, created_at, birthday) VALUES ('Rodrigo', 25, '2010-01-01 00:02:03', '1986-03-31')"];
         [adapter executeQuery:@"INSERT INTO user (name, age, created_at, birthday) VALUES ('Marília', 28, '2010-10-01 10:00:00', '1983-01-25')"];
         
