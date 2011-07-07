@@ -49,7 +49,7 @@ describe(@"initWithPath", ^{
     });
     
     context(@"when :memory: is informed", ^{
-        it(@"doesn't create a file, as it should be a in memory database", ^{
+        it(@"doesn't create a file, as it should be an in memory database", ^{
             [[SQLiteAdapter alloc] initWithPath:@":memory:"];
 
             BOOL databaseFileCreated = [[NSFileManager defaultManager] fileExistsAtPath:@":memory:"];
@@ -86,11 +86,11 @@ describe(@"executeQuery", ^{
                 [[[row objectForKey:@"age"] should] equal:[NSNumber numberWithInt:25]];
             });
             
-            it(@"returns the an NSDate object for created_at", ^{
+            it(@"returns a NSDate object for created_at", ^{
                 [[[row objectForKey:@"created_at"] should] beKindOfClass:[NSDate class]];
             });
             
-            it(@"returns the an NSDate object for birthday", ^{
+            it(@"returns a NSDate object for birthday", ^{
                 [[[row objectForKey:@"birthday"] should] beKindOfClass:[NSDate class]];
             });
         });
