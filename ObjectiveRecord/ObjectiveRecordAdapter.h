@@ -13,5 +13,6 @@
 - (id)initWithPath:(NSString *)path;
 - (id)connection;
 - (NSArray *)executeQuery:(NSString *)sql;
+- (NSArray *)executeQueryWithParameters:(NSString *)sql, ...;
 
 @end

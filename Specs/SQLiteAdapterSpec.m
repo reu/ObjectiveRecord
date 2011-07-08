@@ -101,4 +101,41 @@ describe(@"executeQuery", ^{
     });
 });
 
+describe(@"executeQueryWithParameters", ^{
+    __block SQLiteAdapter *adapter = [[SQLiteAdapter alloc] initWithInMemoryDatabase];
+    
+    [adapter executeQuery:@"CREATE TABLE bands (id INTEGER PRIMARY KEY, name VARCHAR(255), members INTEGER, last_show_at DATE)"];
+    [adapter executeQuery:@"INSERT INTO bands (name, members, last_show_at) VALUES ('Dream Theater', 5, '2009-03-15')"];
+    [adapter executeQuery:@"INSERT INTO bands (name, members, last_show_at) VALUES ('Rush', 3, '2011-01-23')"];
+    [adapter executeQuery:@"INSERT INTO bands (name, members, last_show_at) VALUES ('Iron Maiden', 6, '2010-10-15')"];
+    
+    it(@"correct binds strings", ^{
+        NSArray *result = [adapter executeQueryWithParameters:@"SELECT * FROM bands WHERE name LIKE ?", @"Dream Theater"];
+        
+        [[result should] haveCountOf:1];
+    });
+    
+    it(@"correct binds numbers", ^{
+        NSArray *result = [adapter executeQueryWithParameters:@"SELECT * FROM bands WHERE members > ?", [NSNumber numberWithInt:4]];
+        
+        [[result should] haveCountOf:2];
+    });
+    
+    it(@"correct binds dates", ^{
+        NSArray *result = [adapter executeQueryWithParameters:@"SELECT * FROM bands WHERE last_show_at > ?", @"2010-01-01"];
+        
+        [[result should] haveCountOf:2];
+    });
+    
+    it(@"correct binds multiple parameters", ^{
+        NSArray *result = [adapter executeQueryWithParameters:@"SELECT * FROM bands WHERE members < ? AND last_show_at < ?", [NSNumber numberWithInt:6], @"2011-01-01"];
+        
+        [[result should] haveCountOf:1];
+    });
+    
+    afterAll(^{
+        [adapter release];
+    });
+});
+
 SPEC_END

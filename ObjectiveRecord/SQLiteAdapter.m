@@ -10,6 +10,10 @@
 
 @interface SQLiteAdapter()
 
+- (void)bindObject:(id)obj toColumn:(int)idx inStatement:(sqlite3_stmt *)pStmt;
+
+- (NSArray *)executeStatement:(sqlite3_stmt *)query;
+    
 - (sqlite3_stmt *)prepareQuery:(NSString *)sql;
 
 - (NSArray *)columnsForQuery:(sqlite3_stmt *)query;
@@ -45,9 +49,63 @@
 }
 
 - (NSArray *)executeQuery:(NSString *)sql {
-    sqlite3_stmt *query;
-    query = [self prepareQuery:sql];
+    return [self executeStatement:[self prepareQuery:sql]];
+}
+
+- (NSArray *)executeQueryWithParameters:(NSString *)sql, ... {
+    sqlite3_stmt *query = [self prepareQuery:sql];
     
+    va_list parameters;
+    va_start(parameters, sql);
+    
+    int bindCount = sqlite3_bind_parameter_count(query);
+    
+    for (int i = 1; i <= bindCount; i++) {
+        [self bindObject:va_arg(parameters, id) toColumn:i inStatement:query];
+    }
+
+    va_end(parameters);
+    
+    return [self executeStatement:query];
+}
+
+- (void)dealloc {
+    sqlite3_close(database);
+}
+
+#pragma mark -
+#pragma mark Private methods
+
+// Borrowed from fmdb https://github.com/ccgus/fmdb/blob/master/src/FMDatabase.m#L294-334
+- (void)bindObject:(id)obj toColumn:(int)idx inStatement:(sqlite3_stmt *)pStmt {
+    if ((!obj) || ((NSNull *)obj == [NSNull null])) {
+        sqlite3_bind_null(pStmt, idx);
+    } else if ([obj isKindOfClass:[NSData class]]) {
+        sqlite3_bind_blob(pStmt, idx, [obj bytes], (int)[obj length], SQLITE_STATIC);
+    } else if ([obj isKindOfClass:[NSDate class]]) {
+        sqlite3_bind_double(pStmt, idx, [obj timeIntervalSince1970]);
+    } else if ([obj isKindOfClass:[NSNumber class]]) {
+        if (strcmp([obj objCType], @encode(BOOL)) == 0) {
+            sqlite3_bind_int(pStmt, idx, ([obj boolValue] ? 1 : 0));
+        } else if (strcmp([obj objCType], @encode(int)) == 0) {
+            sqlite3_bind_int64(pStmt, idx, [obj longValue]);
+        } else if (strcmp([obj objCType], @encode(long)) == 0) {
+            sqlite3_bind_int64(pStmt, idx, [obj longValue]);
+        } else if (strcmp([obj objCType], @encode(long long)) == 0) {
+            sqlite3_bind_int64(pStmt, idx, [obj longLongValue]);
+        } else if (strcmp([obj objCType], @encode(float)) == 0) {
+            sqlite3_bind_double(pStmt, idx, [obj floatValue]);
+        } else if (strcmp([obj objCType], @encode(double)) == 0) {
+            sqlite3_bind_double(pStmt, idx, [obj doubleValue]);
+        } else {
+            sqlite3_bind_text(pStmt, idx, [[obj description] UTF8String], -1, SQLITE_STATIC);
+        }
+    } else {
+        sqlite3_bind_text(pStmt, idx, [[obj description] UTF8String], -1, SQLITE_STATIC);
+    }
+}
+
+- (NSArray *)executeStatement:(sqlite3_stmt *)query {
     NSArray *columns = [self columnsForQuery:query];
     NSMutableArray *rows = [NSMutableArray array];
     
@@ -68,13 +126,6 @@
     
     return rows;
 }
-
-- (void)dealloc {
-    sqlite3_close(database);
-}
-
-#pragma mark -
-#pragma mark Private methods
 
 - (sqlite3_stmt *)prepareQuery:(NSString *)sql {
     sqlite3_stmt *query;
