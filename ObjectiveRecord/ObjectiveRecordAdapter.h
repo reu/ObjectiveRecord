@@ -15,4 +15,8 @@
 - (NSArray *)executeQuery:(NSString *)sql;
 - (NSArray *)executeQueryWithParameters:(NSString *)sql, ...;
 
+- (void)beginTransaction;
+- (void)commitTransaction;
+- (void)rollbackTransaction;
+
 @end

@@ -61,6 +61,18 @@
     return [self executeStatement:statement];
 }
 
+- (void)beginTransaction {
+    sqlite3_exec(database, "BEGIN TRANSACTION", NULL, NULL, NULL);
+}
+
+- (void)commitTransaction {
+    sqlite3_exec(database, "COMMIT TRANSACTION", NULL, NULL, NULL);
+}
+
+- (void)rollbackTransaction {
+    sqlite3_exec(database, "ROLLBACK TRANSACTION", NULL, NULL, NULL);
+}
+
 - (void)dealloc {
     sqlite3_close(database);
 }

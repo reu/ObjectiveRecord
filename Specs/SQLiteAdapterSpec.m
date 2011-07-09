@@ -138,4 +138,54 @@ describe(@"executeQueryWithParameters", ^{
     });
 });
 
+describe(@"transaction", ^{
+    __block SQLiteAdapter *adapter = [[SQLiteAdapter alloc] initWithInMemoryDatabase];
+    
+    beforeAll(^{
+        [adapter executeQuery:@"CREATE TABLE pornstars (id INTEGER PRIMARY KEY, name VARCHAR(255))"];
+    });
+    
+    beforeEach(^{
+        [adapter executeQuery:@"DELETE FROM pornstars"];
+        [adapter executeQuery:@"INSERT INTO pornstars (name) VALUES ('Keira Agustina')"];
+        [adapter beginTransaction];
+        
+        [adapter executeQuery:@"INSERT INTO pornstars (name) VALUES ('Sasha Grey')"];
+        [adapter executeQueryWithParameters:@"UPDATE pornstars SET name = ? WHERE name = ?", @"Keyra Agustina", @"Keira Agustina"];
+    });
+    
+    describe(@"commit", ^{
+        beforeEach(^{
+            [adapter commitTransaction];
+        });
+        
+        it(@"commits inserts after the transaction", ^{
+            [[[adapter executeQuery:@"SELECT * FROM pornstars"] should] haveCountOf:2];
+        });
+        
+        it(@"commits updates after the transaction", ^{
+            [[[adapter executeQueryWithParameters:@"SELECT * FROM pornstars WHERE name = ?", @"Keyra Agustina"] should] haveCountOf:1];
+        });
+    });
+    
+    
+    describe(@"rollback", ^{
+        beforeEach(^{
+            [adapter rollbackTransaction];
+        });
+        
+        it(@"rollbacks inserts after the transaction", ^{
+            [[[adapter executeQuery:@"SELECT * FROM pornstars"] should] haveCountOf:1];
+        });
+        
+        it(@"rollbacks updates after the transaction", ^{
+            [[[adapter executeQueryWithParameters:@"SELECT * FROM pornstars WHERE name = ?", @"Keyra Agustina"] should] haveCountOf:0];
+        });
+    });
+    
+    afterAll(^{
+        [adapter executeQuery:@"DROP TABLE pornstars"];
+    });
+});
+
 SPEC_END
