@@ -12,6 +12,7 @@
 @interface SQLiteStatement : NSObject {
     sqlite3 *database;
     sqlite3_stmt *statement;
+    NSArray *columnsCache;
 }
 
 - (id)initWithDatabase:(sqlite3 *)databaseConnection;

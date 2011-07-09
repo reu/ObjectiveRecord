@@ -49,16 +49,20 @@
 }
 
 - (NSArray *)columns {
-    NSMutableArray *columns = [NSMutableArray array];
-    
-    int columnCount = sqlite3_column_count(statement);
-    
-    for (int i = 0; i < columnCount; i++) {
-        const char *columnName = sqlite3_column_name(statement, i);
-        [columns addObject:[NSString stringWithUTF8String:columnName]];
+    if (!columnsCache) {
+        NSMutableArray *columns = [NSMutableArray array];
+        
+        int columnCount = sqlite3_column_count(statement);
+        
+        for (int i = 0; i < columnCount; i++) {
+            const char *columnName = sqlite3_column_name(statement, i);
+            [columns addObject:[NSString stringWithUTF8String:columnName]];
+        }
+        
+        columnsCache = columns;
     }
     
-    return columns;
+    return columnsCache;
 }
 
 - (int)bindParameterCount {
@@ -95,14 +99,12 @@
 }
 
 - (NSMutableDictionary *)step {
-    NSArray *columns = [self columns];
-    
     if (sqlite3_step(statement) == SQLITE_ROW) {
         NSMutableDictionary *row = [NSMutableDictionary dictionary];
         
         int columnIndex = 0;
         
-        for (NSString *column in columns) {
+        for (NSString *column in [self columns]) {
             [row setObject:[self castedValueForColumnIndex:columnIndex] forKey:column];
             
             columnIndex++;
