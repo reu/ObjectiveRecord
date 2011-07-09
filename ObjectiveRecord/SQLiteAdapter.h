@@ -12,6 +12,7 @@
 
 @interface SQLiteAdapter : NSObject <ObjectiveRecordAdapter> {
     sqlite3 *database;
+    BOOL currentlyInTransaction;
 }
 
 - (id)initWithPath:(NSString *)path;

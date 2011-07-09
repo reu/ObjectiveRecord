@@ -62,15 +62,34 @@
 }
 
 - (void)beginTransaction {
-    sqlite3_exec(database, "BEGIN TRANSACTION", NULL, NULL, NULL);
+    if (!currentlyInTransaction) {
+        sqlite3_exec(database, "BEGIN TRANSACTION", NULL, NULL, NULL);
+        currentlyInTransaction = YES;
+    } else {
+        [NSException raise:@"Already in transaction"
+                    format:@"there is already an active transaction"];
+    }
 }
 
 - (void)commitTransaction {
-    sqlite3_exec(database, "COMMIT TRANSACTION", NULL, NULL, NULL);
+    if (currentlyInTransaction) {
+        sqlite3_exec(database, "COMMIT TRANSACTION", NULL, NULL, NULL);
+        currentlyInTransaction = NO;
+    } else {
+        [NSException raise:@"Not in transaction"
+                    format:@"there must be an active transaction in order to commit one"];
+    }
+
 }
 
 - (void)rollbackTransaction {
-    sqlite3_exec(database, "ROLLBACK TRANSACTION", NULL, NULL, NULL);
+    if (currentlyInTransaction) {
+        sqlite3_exec(database, "ROLLBACK TRANSACTION", NULL, NULL, NULL);
+        currentlyInTransaction = NO;
+    } else {
+        [NSException raise:@"Not in transaction"
+                    format:@"there must be an active transaction in order to rollback one"];
+    }
 }
 
 - (void)dealloc {

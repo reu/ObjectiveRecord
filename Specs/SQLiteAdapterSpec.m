@@ -154,6 +154,15 @@ describe(@"transaction", ^{
         [adapter executeQueryWithParameters:@"UPDATE pornstars SET name = ? WHERE name = ?", @"Keyra Agustina", @"Keira Agustina"];
     });
     
+    // TODO: try to understand why doing this screws up everything
+    pending(@"begin", ^{
+        it(@"doesn't allow to begin a transaction inside another one", ^{
+            [[theBlock(^{
+                [adapter beginTransaction];
+            }) should] raise];
+        });
+    });
+    
     describe(@"commit", ^{
         beforeEach(^{
             [adapter commitTransaction];
@@ -165,6 +174,12 @@ describe(@"transaction", ^{
         
         it(@"commits updates after the transaction", ^{
             [[[adapter executeQueryWithParameters:@"SELECT * FROM pornstars WHERE name = ?", @"Keyra Agustina"] should] haveCountOf:1];
+        });
+        
+        it(@"doesn't allow to commit twice", ^{
+            [[theBlock(^{
+                [adapter commitTransaction];
+            }) should] raise];
         });
     });
     
@@ -180,6 +195,12 @@ describe(@"transaction", ^{
         
         it(@"rollbacks updates after the transaction", ^{
             [[[adapter executeQueryWithParameters:@"SELECT * FROM pornstars WHERE name = ?", @"Keyra Agustina"] should] haveCountOf:0];
+        });
+        
+        it(@"doesn't allow to rollback twice", ^{
+            [[theBlock(^{
+                [adapter rollbackTransaction];
+            }) should] raise];
         });
     });
     
