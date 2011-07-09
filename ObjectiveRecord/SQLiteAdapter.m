@@ -49,6 +49,7 @@
     va_list parameters;
     va_start(parameters, sql);
     
+    // TODO: move this implementation to SQLiteStatement
     int bindCount = [statement bindParameterCount];
     
     for (int i = 1; i <= bindCount; i++) {
