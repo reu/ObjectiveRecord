@@ -72,6 +72,10 @@
 		2CC9CC2013C678A4000781E2 /* ObjectiveRecordAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 2CC9CC1A13C678A4000781E2 /* ObjectiveRecordAdapter.h */; };
 		2CC9CC2113C678A4000781E2 /* SQLiteAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 2CC9CC1B13C678A4000781E2 /* SQLiteAdapter.h */; };
 		2CC9CC2213C678A4000781E2 /* SQLiteAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CC9CC1C13C678A4000781E2 /* SQLiteAdapter.m */; };
+		466F87DB13C69FCA00656EDE /* ObjectiveRecord.h in Headers */ = {isa = PBXBuildFile; fileRef = 466F87DA13C69FCA00656EDE /* ObjectiveRecord.h */; };
+		466F87DD13C69FDC00656EDE /* ObjectiveRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 466F87DC13C69FDC00656EDE /* ObjectiveRecord.m */; };
+		468482D713C8D886006B8C93 /* database.plist in Resources */ = {isa = PBXBuildFile; fileRef = 468482D613C8D886006B8C93 /* database.plist */; };
+		46FAD52213C7920500817DD0 /* ObjectiveRecordSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 46FAD52113C7920500817DD0 /* ObjectiveRecordSpec.m */; };
 		AA747D9F0F9514B9006C5449 /* ObjectiveRecord_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = AA747D9E0F9514B9006C5449 /* ObjectiveRecord_Prefix.pch */; };
 		AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
 /* End PBXBuildFile section */
@@ -209,6 +213,10 @@
 		2CC9CC1A13C678A4000781E2 /* ObjectiveRecordAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ObjectiveRecordAdapter.h; path = ObjectiveRecord/ObjectiveRecordAdapter.h; sourceTree = "<group>"; };
 		2CC9CC1B13C678A4000781E2 /* SQLiteAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SQLiteAdapter.h; path = ObjectiveRecord/SQLiteAdapter.h; sourceTree = "<group>"; };
 		2CC9CC1C13C678A4000781E2 /* SQLiteAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SQLiteAdapter.m; path = ObjectiveRecord/SQLiteAdapter.m; sourceTree = "<group>"; };
+		466F87DA13C69FCA00656EDE /* ObjectiveRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ObjectiveRecord.h; path = ObjectiveRecord/ObjectiveRecord.h; sourceTree = "<group>"; };
+		466F87DC13C69FDC00656EDE /* ObjectiveRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ObjectiveRecord.m; path = ObjectiveRecord/ObjectiveRecord.m; sourceTree = "<group>"; };
+		468482D613C8D886006B8C93 /* database.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = database.plist; sourceTree = "<group>"; };
+		46FAD52113C7920500817DD0 /* ObjectiveRecordSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ObjectiveRecordSpec.m; path = Specs/ObjectiveRecordSpec.m; sourceTree = "<group>"; };
 		AA747D9E0F9514B9006C5449 /* ObjectiveRecord_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectiveRecord_Prefix.pch; sourceTree = SOURCE_ROOT; };
 		AACBBE490F95108600F1A2B1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D2AAC07E0554694100DB518D /* libObjectiveRecord.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libObjectiveRecord.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -253,6 +261,7 @@
 				0867D69AFE84028FC02AAC07 /* Frameworks */,
 				034768DFFF38A50411DB9C8B /* Products */,
 				2C43278813C28F9D00F4397B /* ObjectiveRecordSpecs-Info.plist */,
+				468482D613C8D886006B8C93 /* database.plist */,
 			);
 			name = ObjectiveRecord;
 			sourceTree = "<group>";
@@ -269,6 +278,8 @@
 		08FB77AEFE84172EC02AAC07 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				466F87DC13C69FDC00656EDE /* ObjectiveRecord.m */,
+				466F87DA13C69FCA00656EDE /* ObjectiveRecord.h */,
 				2CC9CC1A13C678A4000781E2 /* ObjectiveRecordAdapter.h */,
 				2CC9CC1B13C678A4000781E2 /* SQLiteAdapter.h */,
 				2CC9CC1C13C678A4000781E2 /* SQLiteAdapter.m */,
@@ -412,6 +423,7 @@
 			isa = PBXGroup;
 			children = (
 				2C43284513C290AE00F4397B /* SQLiteAdapterSpec.m */,
+				46FAD52113C7920500817DD0 /* ObjectiveRecordSpec.m */,
 			);
 			name = Specs;
 			sourceTree = "<group>";
@@ -433,6 +445,7 @@
 			files = (
 				2CC9CC1D13C678A4000781E2 /* ObjectiveRecordAdapter.h in Headers */,
 				2CC9CC1E13C678A4000781E2 /* SQLiteAdapter.h in Headers */,
+				466F87DB13C69FCA00656EDE /* ObjectiveRecord.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -516,6 +529,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				468482D713C8D886006B8C93 /* database.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -601,6 +615,8 @@
 				2C43284413C2904000F4397B /* NSValue+KiwiAdditions.m in Sources */,
 				2C43284613C290AE00F4397B /* SQLiteAdapterSpec.m in Sources */,
 				2CC9CC1F13C678A4000781E2 /* SQLiteAdapter.m in Sources */,
+				466F87DD13C69FDC00656EDE /* ObjectiveRecord.m in Sources */,
+				46FAD52213C7920500817DD0 /* ObjectiveRecordSpec.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
