@@ -35,6 +35,11 @@
 }
 
 - (void)prepare:(NSString *)sql {
+    if (statement) {
+        [NSException raise:@"Error while preparing the sqlite query" 
+                    format:@"this statement is already prepared"];
+    }
+    
     sqlite3_stmt *query;
     const char *tail;
     
