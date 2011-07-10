@@ -31,26 +31,20 @@
 SPEC_BEGIN(ObjectiveRecordSpec)
 
 describe(@"findBySQL", ^{
-    beforeAll(^{
-        [[User connection] executeQuery:@"CREATE TABLE user (id INTEGER PRIMARY KEY, name VARCHAR(255))"];
-        [[User connection] executeQuery:@"INSERT INTO user (name) VALUES ('Rodrigo')"];
-        [[User connection] executeQuery:@"INSERT INTO user (name) VALUES ('Marília')"];
-    });
+    [[User connection] executeQuery:@"CREATE TABLE user (id INTEGER PRIMARY KEY, name VARCHAR(255))"];
+    [[User connection] executeQuery:@"INSERT INTO user (name) VALUES ('Rodrigo')"];
+    [[User connection] executeQuery:@"INSERT INTO user (name) VALUES ('Marília')"];
     
     context(@"searching for Rodrigo", ^{
-        
-        beforeAll(^{
-            // Learn how to use tis pointer over the it iterations
-            //NSArray *users = [User findBySQL:@"SELECT * FROM user where name = 'Rodrigo'"];
-        });
+        NSArray *users = [User findBySQL:@"SELECT * FROM user where name = 'Rodrigo'"];
         
         it(@"successfully finds one record", ^{
-            [[[User findBySQL:@"SELECT * FROM user where name = 'Rodrigo'"] should] haveCountOf:1];
+            [[users should] haveCountOf:1];
         });
         
         context(@"user Rodrigo's attributes", ^{
             it(@"has a name", ^{
-                User *user = [[User findBySQL:@"SELECT * FROM user where name = 'Rodrigo'"] lastObject];
+                User *user = [users lastObject];
                 
                 [[[user name] should] equal:@"Rodrigo"];
             });
