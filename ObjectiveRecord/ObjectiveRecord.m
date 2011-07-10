@@ -48,6 +48,10 @@ static id adapter;
     return adapter;
 }
 
++ (NSString *)tableName {
+    return [NSStringFromClass([self class]) lowercaseString];
+}
+
 #pragma mark -
 #pragma mark Private methods
 

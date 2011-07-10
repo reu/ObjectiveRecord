@@ -52,4 +52,10 @@ describe(@"findBySQL", ^{
     });
 });
 
+describe(@"tableName", ^{
+    it(@"is the lowercase class name", ^{
+        [[[User tableName] should] equal:@"user"];
+    });
+});
+
 SPEC_END

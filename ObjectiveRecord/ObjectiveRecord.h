@@ -17,6 +17,8 @@
 + (id)new:(NSDictionary *)values;
 + (id)connection;
 
++ (NSString *)tableName;
+
 @property (nonatomic, retain) NSNumber *primaryKey;
 
 @end
