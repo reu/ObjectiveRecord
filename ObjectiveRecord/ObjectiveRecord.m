@@ -17,8 +17,9 @@ static id adapter;
 
 @end
 
-
 @implementation ObjectiveRecord
+
+@synthesize primaryKey;
 
 + (id)new:(NSDictionary *)values {
     id object = [self new];

@@ -10,19 +10,17 @@
 #import "ObjectiveRecord.h"
 
 @interface User : ObjectiveRecord {
-    NSNumber *primaryKey;
     NSString *name;
 }
- 
-@property (nonatomic, retain) NSNumber *primaryKey;
+
 @property (nonatomic, retain) NSString *name;
- 
+
 @end
- 
+
 @implementation User
- 
-@synthesize primaryKey, name;
- 
+
+@synthesize name;
+
 @end
 
 
@@ -41,10 +39,14 @@ describe(@"findBySQL", ^{
         });
         
         context(@"user Rodrigo's attributes", ^{
+            User *user = [users lastObject];
+            
             it(@"has a name", ^{
-                User *user = [users lastObject];
-                
                 [[[user name] should] equal:@"Rodrigo"];
+            });
+            
+            it(@"has a primary key", ^{
+                [[[user primaryKey] should] equal:[NSNumber numberWithInt:1]];
             });
         });
     });

@@ -10,12 +10,13 @@
 #import "SQLiteAdapter.h"
 
 @interface ObjectiveRecord : NSObject {
-    
+    NSNumber *primaryKey;
 }
 
 + (NSMutableArray *)findBySQL:(NSString *)sql;
 + (id)new:(NSDictionary *)values;
 + (id)connection;
 
+@property (nonatomic, retain) NSNumber *primaryKey;
 
 @end
