@@ -14,18 +14,16 @@
     NSString *name;
 }
  
- @property (nonatomic, retain) NSNumber *primaryKey;
- @property (nonatomic, retain) NSString *name;
+@property (nonatomic, retain) NSNumber *primaryKey;
+@property (nonatomic, retain) NSString *name;
  
- @end
+@end
  
- @implementation User
+@implementation User
  
- @synthesize primaryKey, name;
+@synthesize primaryKey, name;
  
- @end
-
-
+@end
 
 
 SPEC_BEGIN(ObjectiveRecordSpec)
