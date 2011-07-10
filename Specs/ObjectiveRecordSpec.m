@@ -32,14 +32,14 @@ describe(@"findBySQL", ^{
     [[User connection] executeQuery:@"INSERT INTO user (name) VALUES ('Marília')"];
     
     context(@"searching for Rodrigo", ^{
-        NSArray *users = [User findBySQL:@"SELECT * FROM user where name = 'Rodrigo'"];
+        __block NSArray *users = [User findBySQL:@"SELECT * FROM user where name = 'Rodrigo'"];
         
         it(@"successfully finds one record", ^{
             [[users should] haveCountOf:1];
         });
         
         context(@"user Rodrigo's attributes", ^{
-            User *user = [users lastObject];
+            __block User *user = [users lastObject];
             
             it(@"has a name", ^{
                 [[[user name] should] equal:@"Rodrigo"];
