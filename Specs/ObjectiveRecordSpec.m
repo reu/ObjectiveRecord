@@ -31,7 +31,7 @@ SPEC_BEGIN(ObjectiveRecordSpec)
 describe(@"initWithAttributes", ^{
     __block NSMutableDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:1], @"id", @"Keyra Agustina", @"name", nil];
     
-    describe(@"allows initialize the record with a dictionary", ^{
+    it(@"allows initialize the record with a dictionary", ^{
         [[theBlock(^{
             [User initWithAttributes:attributes];
         }) shouldNot] raise];
