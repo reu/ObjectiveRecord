@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ObjectiveRecordAdapter.h"
 #import "SQLiteAdapter.h"
 
 @interface ObjectiveRecord : NSObject {
@@ -15,7 +16,7 @@
 
 + (NSMutableArray *)findBySQL:(NSString *)sql;
 + (id)new:(NSDictionary *)values;
-+ (id)connection;
++ (id <ObjectiveRecordAdapter>)connection;
 
 + (NSString *)tableName;
 + (NSArray *)columnNames;
