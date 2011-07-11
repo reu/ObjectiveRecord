@@ -103,7 +103,7 @@
     }
 }
 
-- (NSMutableDictionary *)step {
+- (NSDictionary *)step {
     if (sqlite3_step(statement) == SQLITE_ROW) {
         NSMutableDictionary *row = [NSMutableDictionary dictionary];
         
