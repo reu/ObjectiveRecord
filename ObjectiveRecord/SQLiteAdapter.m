@@ -40,6 +40,19 @@
     return [self executeStatement:statement];
 }
 
+- (NSArray *)executeQuery:(NSString *)sql withParameters:(NSArray *)parameters {
+    SQLiteStatement *statement = [[SQLiteStatement alloc] initWithDatabase:database andQuery:sql];
+    
+    int bindCount = 1;
+    
+    for (id parameter in parameters) {
+        [statement bindObject:parameter toColumn:bindCount];
+        bindCount++;
+    }
+    
+    return [self executeStatement:statement];
+}
+
 - (NSArray *)executeQueryWithParameters:(NSString *)sql, ... {
     SQLiteStatement *statement = [[SQLiteStatement alloc] initWithDatabase:database andQuery:sql];
     

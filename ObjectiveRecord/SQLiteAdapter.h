@@ -16,6 +16,7 @@
 - (id)initWithInMemoryDatabase;
 - (id)connection;
 - (NSArray *)executeQuery:(NSString *)sql;
+- (NSArray *)executeQuery:(NSString *)sql withParameters:(NSArray *)parameters;
 - (NSArray *)executeQueryWithParameters:(NSString *)sql, ...;
 - (NSArray *)columnsForTable:(NSString *)tableName;
 - (NSUInteger)lastInsertId;

@@ -93,6 +93,16 @@ describe(@"executeQuery", ^{
         });
     });
     
+    describe(@"withParameters", ^{
+        __block NSArray *parameters = [NSArray arrayWithObjects:@"Navarro", [NSNumber numberWithInt:5], nil];
+        
+        it(@"allows a array with parameters as bindings", ^{
+            [[theBlock(^{
+                [adapter executeQuery:@"INSERT INTO user (name, age) VALUES (?, ?)" withParameters:parameters];
+            }) shouldNot] raise];
+        });
+    });
+    
     afterAll(^{
         [adapter release];
     });
