@@ -149,18 +149,23 @@ static id adapter;
 
 - (void)update {
     NSArray *columnNames = [[self class] columnNamesWithoutPrimaryKey];
+    
+    NSMutableArray *bindings = [NSMutableArray array];
     NSMutableArray *values = [NSMutableArray array];
     
     for (NSString *column in columnNames) {
-        [values addObject:[NSString stringWithFormat:@"%@ = '%@'", column, [self valueForKey:column]]];
+        id value = [self valueForKey:column];
+        [values addObject:value ? value : @""];
+        
+        [bindings addObject:[NSString stringWithFormat:@"%@ = ?", column]];
     }
     
     NSString *sql = [NSString stringWithFormat:@"UPDATE %@ SET %@ WHERE id = %@", 
                      [[self class] tableName], 
-                     [values componentsJoinedByString:@","],
+                     [bindings componentsJoinedByString:@","],
                      [self primaryKey]];
     
-    [[[self class] connection] executeQuery:sql];
+    [[[self class] connection] executeQuery:sql withParameters:values];
 }
 
 + (NSString *)pathToDb {
