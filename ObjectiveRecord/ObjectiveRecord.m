@@ -61,7 +61,7 @@ static id adapter;
 
 + (NSString *)pathToDb {
     //Having a hard time making these paths work during test.
-    NSString* plistPath = [[NSBundle mainBundle] pathForResource:@"database" ofType:@"plist"];
+    NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"database" ofType:@"plist"];
     if (!plistPath)
         plistPath = @"database.plist";
     
