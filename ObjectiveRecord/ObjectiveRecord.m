@@ -24,9 +24,18 @@ static id adapter;
 + (id)initWithAttributes:(NSDictionary *)attributes {
     id object = [self new];
     
-    if (object)
-        for(NSString *key in attributes)
-            [object setValue:[attributes objectForKey:key] forKey:([key isEqualToString:@"id"] ? @"primaryKey": key)];
+    if (object) {
+        for(NSString *key in attributes) {
+            NSString *normalizedKey = [key isEqualToString:@"id"] ? @"primaryKey": key;
+            
+            if ([object respondsToSelector:NSSelectorFromString(normalizedKey)]) {
+                [object setValue:[attributes objectForKey:key] forKey:normalizedKey];
+            } else {
+                // Don't know if we should silent fail here... anyways, the user should receive some kind of warning
+            }
+
+        }
+    }
     
     return [object autorelease];
 }
