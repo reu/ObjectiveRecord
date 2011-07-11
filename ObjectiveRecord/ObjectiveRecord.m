@@ -175,7 +175,7 @@ static id adapter;
     
     [config release];
     
-    if ([dbName isEqualToString:@":memory:"])
+    if (!dbName || [dbName isEqualToString:@":memory:"])
         return dbName;
 
     return [NSString stringWithFormat:@"%@/%@.db", [NSBundle mainBundle], dbName];
