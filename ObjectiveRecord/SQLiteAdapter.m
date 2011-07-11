@@ -92,6 +92,17 @@
     }
 }
 
+// This is a terrible approach, but I was getting repeating errors using PRAGMA table_info(tableName)
+- (NSArray *)columnsForTable:(NSString *)tableName {
+    SQLiteStatement *statement = [[SQLiteStatement alloc] initWithDatabase:database andQuery:[NSString stringWithFormat:@"SELECT * FROM %@", tableName]];
+    
+    NSArray *columns = [statement columns];
+    
+    [statement release];
+    
+    return columns;
+}
+
 - (void)dealloc {
     sqlite3_close(database);
 }

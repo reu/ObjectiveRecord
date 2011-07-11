@@ -52,6 +52,10 @@ static id adapter;
     return [NSStringFromClass([self class]) lowercaseString];
 }
 
++ (NSArray *)columnNames {
+    return [[self connection] columnsForTable:[self tableName]];
+}
+
 #pragma mark -
 #pragma mark Private methods
 

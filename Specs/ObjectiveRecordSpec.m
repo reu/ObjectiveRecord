@@ -26,8 +26,9 @@
 
 SPEC_BEGIN(ObjectiveRecordSpec)
 
+[[User connection] executeQuery:@"CREATE TABLE user (id INTEGER PRIMARY KEY, name VARCHAR(255))"];
+
 describe(@"findBySQL", ^{
-    [[User connection] executeQuery:@"CREATE TABLE user (id INTEGER PRIMARY KEY, name VARCHAR(255))"];
     [[User connection] executeQuery:@"INSERT INTO user (name) VALUES ('Rodrigo')"];
     [[User connection] executeQuery:@"INSERT INTO user (name) VALUES ('Marília')"];
     
@@ -55,6 +56,16 @@ describe(@"findBySQL", ^{
 describe(@"tableName", ^{
     it(@"is the lowercase class name", ^{
         [[[User tableName] should] equal:@"user"];
+    });
+});
+
+describe(@"columnNames", ^{
+    it(@"contains two columns", ^{
+        [[[User columnNames] should] haveCountOf:2];
+    });
+    
+    it(@"contains a name column", ^{
+        [[[User columnNames] should] contain:@"name"];
     });
 });
 

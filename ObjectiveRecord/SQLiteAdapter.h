@@ -20,6 +20,7 @@
 - (id)connection;
 - (NSArray *)executeQuery:(NSString *)sql;
 - (NSArray *)executeQueryWithParameters:(NSString *)sql, ...;
+- (NSArray *)columnsForTable:(NSString *)tableName;
 
 - (void)beginTransaction;
 - (void)commitTransaction;

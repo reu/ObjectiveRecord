@@ -18,6 +18,7 @@
 + (id)connection;
 
 + (NSString *)tableName;
++ (NSArray *)columnNames;
 
 @property (nonatomic, retain) NSNumber *primaryKey;
 

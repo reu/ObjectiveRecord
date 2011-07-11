@@ -138,6 +138,25 @@ describe(@"executeQueryWithParameters", ^{
     });
 });
 
+describe(@"columnsForTable", ^{
+    __block SQLiteAdapter *adapter = [[SQLiteAdapter alloc] initWithInMemoryDatabase];
+    
+    [adapter executeQuery:@"CREATE TABLE cars (id INTEGER PRIMARY KEY, name VARCHAR(255), brand VARCHAR(50), created_at DATETIME)"];
+    
+    it(@"returns a list of column names", ^{
+        NSArray *columns = [adapter columnsForTable:@"cars"];
+        
+        [[columns should] contain:@"id"];
+        [[columns should] contain:@"name"];
+        [[columns should] contain:@"brand"];
+        [[columns should] contain:@"created_at"];
+    });
+    
+    afterAll(^{
+        [adapter release];
+    });
+});
+
 describe(@"transaction", ^{
     __block SQLiteAdapter *adapter = [[SQLiteAdapter alloc] initWithInMemoryDatabase];
     
