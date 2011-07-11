@@ -52,7 +52,7 @@ describe(@"initWithAttributes", ^{
             [[[user name] should] equal:@"Keyra Agustina"];
         });
         
-        it(@"automatically sets the primaryKey attribute in case a key named id is passed in the dictionary", ^{
+        it(@"automatically sets the primaryKey attribute in case the the dictionary has key named id", ^{
             [[[user primaryKey] should] equal:[NSNumber numberWithInt:1]];
         });
     });
