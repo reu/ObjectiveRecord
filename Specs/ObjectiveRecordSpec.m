@@ -28,6 +28,28 @@ SPEC_BEGIN(ObjectiveRecordSpec)
 
 [[User connection] executeQuery:@"CREATE TABLE user (id INTEGER PRIMARY KEY, name VARCHAR(255))"];
 
+describe(@"new", ^{
+    __block NSMutableDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:1], @"id", @"Keyra Agustina", @"name", nil];
+    
+    describe(@"allows initialize the record with a dictionary", ^{
+        [[theBlock(^{
+            [User new:attributes];
+        }) shouldNot] raise];
+    });
+    
+    describe(@"attributes setting", ^{
+        __block User *user = [User new:attributes];
+        
+        it(@"should set the name property", ^{
+            [[[user name] should] equal:@"Keyra Agustina"];
+        });
+        
+        it(@"automatically sets the primaryKey attribute in case a key named id is passed in the dictionary", ^{
+            [[[user primaryKey] should] equal:[NSNumber numberWithInt:1]];
+        });
+    });
+});
+
 describe(@"findBySQL", ^{
     [[User connection] executeQuery:@"INSERT INTO user (name) VALUES ('Rodrigo')"];
     [[User connection] executeQuery:@"INSERT INTO user (name) VALUES ('Marília')"];
