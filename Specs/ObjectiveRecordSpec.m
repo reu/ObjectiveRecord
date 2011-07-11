@@ -67,15 +67,13 @@ describe(@"recordWithAttributes", ^{
         }) shouldNot] raise];
     });
     
-    // Don't know how to test this
-    pending(@"returns an autorelease object", ^{
-        User *user;
-        
+    it(@"returns an autorelease object", ^{
         NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-        user = [User recordWithAttributes:attributes];
-        [pool drain];
         
-        [[theValue([user retainCount]) should] equal:[NSNumber numberWithInt:0]];
+        User *user = [User recordWithAttributes:attributes];
+        [[user should] receive:@selector(release)];
+        
+        [pool drain];
     });
 });
 
