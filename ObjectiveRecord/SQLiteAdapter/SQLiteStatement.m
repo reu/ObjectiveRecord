@@ -2,9 +2,6 @@
 //  SQLiteStatement.m
 //  ObjectiveRecord
 //
-//  Created by Rodrigo Navarro on 7/8/11.
-//  Copyright 2011 Manapot. All rights reserved.
-//
 
 #import "SQLiteStatement.h"
 

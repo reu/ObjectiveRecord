@@ -2,9 +2,6 @@
 //  SQLiteAdapter.m
 //  ObjectiveRecord
 //
-//  Created by Rodrigo Navarro on 7/4/11.
-//  Copyright 2011 Manapot. All rights reserved.
-//
 
 #import "SQLiteAdapter.h"
 #import "SQLiteStatement.h"

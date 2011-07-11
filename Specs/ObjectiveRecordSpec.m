@@ -2,9 +2,6 @@
 //  ObjectiveRecordSpec.m
 //  ObjectiveRecord
 //
-//  Created by Guilherme da Silva Mello on 7/8/11.
-//  Copyright 2011 Guimello Tecnologia. All rights reserved.
-//
 
 #import "Kiwi.h"
 #import "ObjectiveRecord.h"
