@@ -34,7 +34,7 @@ describe(@"initWithAttributes", ^{
         }) shouldNot] raise];
     });
     
-    it(@"should silent fail when there are attributes in the dictionary that doesn't match any of the object properties", ^{
+    it(@"should ignore attributes in the dictionary that doesn't match any of the object properties", ^{
         NSMutableDictionary *invalidAttributes = [NSDictionary dictionaryWithObjectsAndKeys:@"Nyan", @"invalidAttribute", nil];
         
         [[theBlock(^{
