@@ -106,6 +106,90 @@ describe(@"save", ^{
             [[[User findWithSQL:@"SELECT * FROM user where name = 'Keira'"] should] haveCountOf:0];
         });
     });
+    
+    describe(@"callbacks", ^{
+        [[User connection] executeQuery:@"INSERT INTO user (name) VALUES ('Rodrigo')"];
+        
+        __block User *savedUser;
+        __block User *unsavedUser;
+        
+        beforeEach(^{
+            savedUser = [[User findWithSQL:@"SELECT * FROM USER WHERE name = 'Rodrigo'"] lastObject];
+            unsavedUser = [User new];
+        });
+        
+        context(@"before save", ^{
+            it(@"is triggered before saving a saved record", ^{
+                [[savedUser should] receive:@selector(beforeSave)];
+                [savedUser save];
+            });
+            
+            it(@"is triggered before saving a unsaved record", ^{
+                [[unsavedUser should] receive:@selector(beforeSave)];
+                [unsavedUser save];
+            });
+        });
+        
+        context(@"after save", ^{
+            it(@"is triggered after saving a saved record", ^{
+                [[savedUser should] receive:@selector(afterSave)];
+                [savedUser save];
+            });
+            
+            it(@"is triggered after saving a unsaved record", ^{
+                [[unsavedUser should] receive:@selector(afterSave)];
+                [unsavedUser save];
+            });
+        });
+        
+        context(@"before create", ^{
+            it(@"is triggered after saving a unsaved record", ^{
+                [[unsavedUser should] receive:@selector(beforeCreate)];
+                [unsavedUser save];
+            });
+            
+            it(@"is not triggered after saving a saved record", ^{
+                [[savedUser shouldNot] receive:@selector(beforeCreate)];
+                [savedUser save];
+            });
+        });
+        
+        context(@"after create", ^{
+            it(@"is triggered after saving a unsaved record", ^{
+                [[unsavedUser should] receive:@selector(afterCreate)];
+                [unsavedUser save];
+            });
+            
+            it(@"is not triggered after saving a saved record", ^{
+                [[savedUser shouldNot] receive:@selector(afterCreate)];
+                [savedUser save];
+            });
+        });
+        
+        context(@"before update", ^{
+            it(@"is triggered after saving a saved record", ^{
+                [[savedUser should] receive:@selector(beforeUpdate)];
+                [savedUser save];
+            });
+            
+            it(@"is not triggered after saving a unsaved record", ^{
+                [[unsavedUser shouldNot] receive:@selector(beforeUpdate)];
+                [unsavedUser save];
+            });
+        });
+        
+        context(@"after update", ^{
+            it(@"is triggered after saving a saved record", ^{
+                [[savedUser should] receive:@selector(afterUpdate)];
+                [savedUser save];
+            });
+            
+            it(@"is not triggered after saving a unsaved record", ^{
+                [[unsavedUser shouldNot] receive:@selector(afterUpdate)];
+                [unsavedUser save];
+            });            
+        });
+    });
 });
 
 describe(@"findWithSQL", ^{

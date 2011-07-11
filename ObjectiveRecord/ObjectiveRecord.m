@@ -19,6 +19,17 @@ static id adapter;
 
 @end
 
+@interface ObjectiveRecord(callbacks)
+
+- (void)beforeSave;
+- (void)beforeCreate;
+- (void)beforeUpdate;
+- (void)afterSave;
+- (void)afterCreate;
+- (void)afterUpdate;
+
+@end
+
 @implementation ObjectiveRecord
 
 @synthesize primaryKey;
@@ -78,11 +89,33 @@ static id adapter;
 
 - (void)save {
     if ([self isNewRecord]) {
+        [self beforeCreate];
+        [self beforeSave];
+        
         [self create];
+        
+        [self afterCreate];
+        [self afterSave];
     } else {
+        [self beforeUpdate];
+        [self beforeSave];
+        
         [self update];
+        
+        [self afterUpdate];
+        [self afterSave];
     }
 }
+
+#pragma mark -
+#pragma mark Callbacks
+
+- (void)beforeSave {}
+- (void)beforeCreate {}
+- (void)beforeUpdate {}
+- (void)afterSave {}
+- (void)afterCreate {}
+- (void)afterUpdate {}
 
 #pragma mark -
 #pragma mark Private methods
