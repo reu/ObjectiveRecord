@@ -51,7 +51,7 @@ static id adapter;
     return [[[self alloc] initWithAttributes:attributes] autorelease];
 }
 
-+ (NSMutableArray *)findWithSQL:(NSString *)sql {
++ (NSArray *)findWithSQL:(NSString *)sql {
     NSMutableArray *objectiveRecords = [NSMutableArray array];
     NSArray *rows = [[self connection] executeQuery:sql];
     
