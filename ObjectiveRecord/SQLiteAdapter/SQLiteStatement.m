@@ -151,7 +151,7 @@
             
             break;
         case SQLITE_NULL:
-            return nil;
+            return [NSNull null];
             break;
         default:
             break;

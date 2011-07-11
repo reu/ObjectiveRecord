@@ -68,7 +68,7 @@ describe(@"executeQuery", ^{
     
     context(@"that returns two rows", ^{
         [adapter executeQuery:@"CREATE TABLE user (id INTEGER PRIMARY KEY, name VARCHAR(255), age INTEGER, created_at DATETIME, birthday DATE)"];
-        [adapter executeQuery:@"INSERT INTO user (name, age, created_at, birthday) VALUES ('Rodrigo', 25, '2010-01-01 00:02:03', '1986-03-31')"];
+        [adapter executeQuery:@"INSERT INTO user (name, age, created_at) VALUES ('Rodrigo', 25, '2010-01-01 00:02:03')"];
         [adapter executeQuery:@"INSERT INTO user (name, age, created_at, birthday) VALUES ('Marília', 28, '2010-10-01 10:00:00', '1983-01-25')"];
         
         describe(@"the first row", ^{
@@ -87,8 +87,8 @@ describe(@"executeQuery", ^{
                 [[[row objectForKey:@"created_at"] should] beKindOfClass:[NSDate class]];
             });
             
-            it(@"returns a NSDate object for birthday", ^{
-                [[[row objectForKey:@"birthday"] should] beKindOfClass:[NSDate class]];
+            it(@"returns a NSNull object for birthday", ^{
+                [[[row objectForKey:@"birthday"] should] beKindOfClass:[NSNull class]];
             });
         });
     });
