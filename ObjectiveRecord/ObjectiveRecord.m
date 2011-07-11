@@ -21,22 +21,22 @@ static id adapter;
 
 @synthesize primaryKey;
 
-+ (id)new:(NSDictionary *)values {
++ (id)initWithAttributes:(NSDictionary *)attributes {
     id object = [self new];
     
     if (object)
-        for(NSString *key in values)
-            [object setValue:[values objectForKey:key] forKey:([key isEqualToString:@"id"] ? @"primaryKey": key)];
+        for(NSString *key in attributes)
+            [object setValue:[attributes objectForKey:key] forKey:([key isEqualToString:@"id"] ? @"primaryKey": key)];
     
     return [object autorelease];
 }
 
-+ (NSMutableArray *)findBySQL:(NSString *)sql {
++ (NSMutableArray *)findWithSQL:(NSString *)sql {
     NSMutableArray *objectiveRecords = [NSMutableArray array];
     NSArray *rows = [[self connection] executeQuery:sql];
     
     for(NSDictionary *values in rows)
-        [objectiveRecords addObject:[self new:values]];
+        [objectiveRecords addObject:[self initWithAttributes:values]];
     
     return objectiveRecords;
 }

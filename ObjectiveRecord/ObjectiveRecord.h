@@ -14,8 +14,8 @@
     NSNumber *primaryKey;
 }
 
-+ (NSMutableArray *)findBySQL:(NSString *)sql;
-+ (id)new:(NSDictionary *)values;
++ (NSMutableArray *)findWithSQL:(NSString *)sql;
++ (id)initWithAttributes:(NSDictionary *)attributes;
 + (id <ObjectiveRecordAdapter>)connection;
 
 + (NSString *)tableName;

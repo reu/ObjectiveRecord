@@ -28,17 +28,17 @@ SPEC_BEGIN(ObjectiveRecordSpec)
 
 [[User connection] executeQuery:@"CREATE TABLE user (id INTEGER PRIMARY KEY, name VARCHAR(255))"];
 
-describe(@"new", ^{
+describe(@"initWithAttributes", ^{
     __block NSMutableDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:1], @"id", @"Keyra Agustina", @"name", nil];
     
     describe(@"allows initialize the record with a dictionary", ^{
         [[theBlock(^{
-            [User new:attributes];
+            [User initWithAttributes:attributes];
         }) shouldNot] raise];
     });
     
     describe(@"attributes setting", ^{
-        __block User *user = [User new:attributes];
+        __block User *user = [User initWithAttributes:attributes];
         
         it(@"should set the name property", ^{
             [[[user name] should] equal:@"Keyra Agustina"];
@@ -50,12 +50,12 @@ describe(@"new", ^{
     });
 });
 
-describe(@"findBySQL", ^{
+describe(@"findWithSQL", ^{
     [[User connection] executeQuery:@"INSERT INTO user (name) VALUES ('Rodrigo')"];
     [[User connection] executeQuery:@"INSERT INTO user (name) VALUES ('Marília')"];
     
     context(@"searching for Rodrigo", ^{
-        __block NSArray *users = [User findBySQL:@"SELECT * FROM user where name = 'Rodrigo'"];
+        __block NSArray *users = [User findWithSQL:@"SELECT * FROM user where name = 'Rodrigo'"];
         
         it(@"successfully finds one record", ^{
             [[users should] haveCountOf:1];
