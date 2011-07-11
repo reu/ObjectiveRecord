@@ -70,7 +70,7 @@ describe(@"recordWithAttributes", ^{
         User *user = [User recordWithAttributes:attributes];
         [[user should] receive:@selector(release)];
         
-        [pool drain];
+        [pool release];
     });
 });
 
