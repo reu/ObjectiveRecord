@@ -125,21 +125,24 @@ static id adapter;
     return columnNames;
 }
 
-// Of course we should use prepared statements here, but this was the fastest implementation for the proof of concept
 - (void)create {
     NSArray *columnNames = [[self class] columnNamesWithoutPrimaryKey];
+    
+    NSMutableArray *bindings = [NSMutableArray array];
     NSMutableArray *values = [NSMutableArray array];
     
     for (NSString *column in columnNames) {
-        [values addObject:[NSString stringWithFormat:@"'%@'", [self valueForKey:column]]];
+        id value = [self valueForKey:column];
+        [values addObject:value ? value : @""];
+        [bindings addObject:@"?"];
     }
     
     NSString *sql = [NSString stringWithFormat:@"INSERT INTO %@ (%@) VALUES (%@)", 
                      [[self class] tableName], 
                      [columnNames componentsJoinedByString:@","],
-                     [values componentsJoinedByString:@","]];
+                     [bindings componentsJoinedByString:@","]];
     
-    [[[self class] connection] executeQuery:sql];
+    [[[self class] connection] executeQuery:sql withParameters:values];
     
     [self setValue:[NSNumber numberWithInteger:[[[self class] connection] lastInsertId]] forKey:@"primaryKey"];
 }
