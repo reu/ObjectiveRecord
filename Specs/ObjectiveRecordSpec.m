@@ -58,17 +58,58 @@ describe(@"initWithAttributes", ^{
     });
 });
 
-describe(@"save", ^{
-    it(@"persists a record in the database", ^{
+describe(@"isNewRecord", ^{
+    it(@"is false when the object is persisted in the database", ^{
         User *user = [User new];
-        user.name = @"Nemo";
+        user.name = @"Rodrigo";
         [user save];
         
-        [[[User findWithSQL:@"SELECT * FROM user where name = 'Nemo'"] should] haveCountOf:1];
+        [[theValue([user isNewRecord]) should] beFalse];
+    });
+    
+    it(@"is true when the object is not persisted in the database", ^{
+        User *user = [User new];
+        user.name = @"Guilherme";
+        
+        [[theValue([user isNewRecord]) should] beTrue];
+    });
+});
+
+describe(@"save", ^{
+    context(@"when the record doesn't exist in the database", ^{
+        it(@"creates it", ^{
+            User *user = [User new];
+            user.name = @"Nemo";
+            [user save];
+            
+            [[[User findWithSQL:@"SELECT * FROM user where name = 'Nemo'"] should] haveCountOf:1];
+        });
+        
+        it(@"sets the primary key of the recentyle created record", ^{
+            User *user = [User new];
+            user.name = @"Anakin";
+            [user save];
+            
+            [[user primaryKey] shouldNotBeNil];
+        });
+    });
+    
+    context(@"when the record already exist in the database", ^{
+        [[User connection] executeQuery:@"INSERT INTO user (name) VALUES ('Keira')"];
+        
+        it(@"updates it", ^{
+            User *user = [[User findWithSQL:@"SELECT * FROM user"] lastObject];
+            user.name = @"Keyra";
+            [user save];
+            
+            [[[User findWithSQL:@"SELECT * FROM user where name = 'Keyra'"] should] haveCountOf:1];
+            [[[User findWithSQL:@"SELECT * FROM user where name = 'Keira'"] should] haveCountOf:0];
+        });
     });
 });
 
 describe(@"findWithSQL", ^{
+    [[User connection] executeQuery:@"DELETE FROM user"];
     [[User connection] executeQuery:@"INSERT INTO user (name) VALUES ('Rodrigo')"];
     [[User connection] executeQuery:@"INSERT INTO user (name) VALUES ('Marília')"];
     

@@ -61,6 +61,10 @@
     return [self executeStatement:statement];
 }
 
+- (NSUInteger)lastInsertId {
+    return (NSUInteger)sqlite3_last_insert_rowid(database);
+}
+
 - (void)beginTransaction {
     if (!currentlyInTransaction) {
         sqlite3_exec(database, "BEGIN TRANSACTION", NULL, NULL, NULL);

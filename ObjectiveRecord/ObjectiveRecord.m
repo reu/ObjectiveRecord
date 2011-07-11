@@ -15,6 +15,7 @@ static id adapter;
 
 + (NSString *)pathToDb;
 - (void)create;
+- (void)update;
 
 @end
 
@@ -66,8 +67,21 @@ static id adapter;
     return [[self connection] columnsForTable:[self tableName]];
 }
 
+// TODO: make this smarter, perhaps using an property newRecord as a cache or something
+- (BOOL)isNewRecord {
+    if ([self primaryKey]) {
+        return [[[self class] findWithSQL:[NSString stringWithFormat:@"SELECT id FROM %@ WHERE id = %@ LIMIT 1", [[self class] tableName], [self primaryKey]]] count] == 0;
+    } else {
+        return YES;
+    }
+}
+
 - (void)save {
-    [self create];
+    if ([self isNewRecord]) {
+        [self create];
+    } else {
+        [self update];
+    }
 }
 
 #pragma mark -
@@ -93,6 +107,24 @@ static id adapter;
                      [[self class] tableName], 
                      [columnNames componentsJoinedByString:@","],
                      [values componentsJoinedByString:@","]];
+    
+    [[[self class] connection] executeQuery:sql];
+    
+    [self setValue:[NSNumber numberWithInteger:[[[self class] connection] lastInsertId]] forKey:@"primaryKey"];
+}
+
+- (void)update {
+    NSArray *columnNames = [[self class] columnNamesWithoutPrimaryKey];
+    NSMutableArray *values = [NSMutableArray array];
+    
+    for (NSString *column in columnNames) {
+        [values addObject:[NSString stringWithFormat:@"%@ = '%@'", column, [self valueForKey:column]]];
+    }
+    
+    NSString *sql = [NSString stringWithFormat:@"UPDATE %@ SET %@ WHERE id = %@", 
+                     [[self class] tableName], 
+                     [values componentsJoinedByString:@","],
+                     [self primaryKey]];
     
     [[[self class] connection] executeQuery:sql];
 }

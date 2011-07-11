@@ -157,6 +157,22 @@ describe(@"columnsForTable", ^{
     });
 });
 
+// Must understand how Kiwi handle this type of test
+pending(@"lastInsertId", ^{
+    __block SQLiteAdapter *adapter = [[SQLiteAdapter alloc] initWithInMemoryDatabase];
+    
+    it(@"returns the id of the last insert query", ^{
+        [adapter executeQuery:@"CREATE TABLE jedis (id INTEGER PRIMARY KEY, name VARCHAR(255))"];
+        [adapter executeQuery:@"INSERT INTO jedis (name) VALUES ('Luke')"];
+        
+    //    [[[adapter lastInsertId] should] equal:1];
+    });
+    
+    afterAll(^{
+        [adapter release];
+    });
+});
+
 describe(@"transaction", ^{
     __block SQLiteAdapter *adapter = [[SQLiteAdapter alloc] initWithInMemoryDatabase];
     
