@@ -14,8 +14,10 @@
     NSNumber *primaryKey;
 }
 
+- (id)initWithAttributes:(NSDictionary *)attributes;
++ (id)recordWithAttributes:(NSDictionary *)attributes;
+
 + (NSMutableArray *)findWithSQL:(NSString *)sql;
-+ (id)initWithAttributes:(NSDictionary *)attributes;
 + (id <ObjectiveRecordAdapter>)connection;
 
 + (NSString *)tableName;

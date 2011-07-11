@@ -33,7 +33,7 @@ describe(@"initWithAttributes", ^{
     
     it(@"allows initialize the record with a dictionary", ^{
         [[theBlock(^{
-            [User initWithAttributes:attributes];
+            [[User alloc] initWithAttributes:attributes];
         }) shouldNot] raise];
     });
     
@@ -41,12 +41,12 @@ describe(@"initWithAttributes", ^{
         NSMutableDictionary *invalidAttributes = [NSDictionary dictionaryWithObjectsAndKeys:@"Nyan", @"invalidAttribute", nil];
         
         [[theBlock(^{
-            [User initWithAttributes:invalidAttributes];
+            [[User alloc] initWithAttributes:invalidAttributes];
         }) shouldNot] raise];
     });
     
     describe(@"attributes setting", ^{
-        __block User *user = [User initWithAttributes:attributes];
+        __block User *user = [[User alloc] initWithAttributes:attributes];
         
         it(@"should set the name property", ^{
             [[[user name] should] equal:@"Keyra Agustina"];
@@ -55,6 +55,27 @@ describe(@"initWithAttributes", ^{
         it(@"automatically sets the primaryKey attribute in case the the dictionary has key named id", ^{
             [[[user primaryKey] should] equal:[NSNumber numberWithInt:1]];
         });
+    });
+});
+
+describe(@"recordWithAttributes", ^{
+    __block NSMutableDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:1], @"id", @"Keyra Agustina", @"name", nil];
+    
+    it(@"allows initialize the record with a dictionary", ^{
+        [[theBlock(^{
+            [User recordWithAttributes:attributes];
+        }) shouldNot] raise];
+    });
+    
+    // Don't know how to test this
+    pending(@"returns an autorelease object", ^{
+        User *user;
+        
+        NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+        user = [User recordWithAttributes:attributes];
+        [pool drain];
+        
+        [[theValue([user retainCount]) should] equal:[NSNumber numberWithInt:0]];
     });
 });
 

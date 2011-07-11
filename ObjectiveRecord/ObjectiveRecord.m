@@ -34,23 +34,24 @@ static id adapter;
 
 @synthesize primaryKey;
 
-+ (id)initWithAttributes:(NSDictionary *)attributes {
-    id object = [self new];
-    
-    if (object) {
+- (id)initWithAttributes:(NSDictionary *)attributes {
+    if (self = [super init]) {
         for(NSString *key in attributes) {
             NSString *normalizedKey = [key isEqualToString:@"id"] ? @"primaryKey": key;
             
-            if ([object respondsToSelector:NSSelectorFromString(normalizedKey)]) {
-                [object setValue:[attributes objectForKey:key] forKey:normalizedKey];
+            if ([self respondsToSelector:NSSelectorFromString(normalizedKey)]) {
+                [self setValue:[attributes objectForKey:key] forKey:normalizedKey];
             } else {
                 // Don't know if we should silent fail here... anyways, the user should receive some kind of warning
             }
-
         }
     }
     
-    return [object autorelease];
+    return self;
+}
+
++ (id)recordWithAttributes:(NSDictionary *)attributes {
+    return [[[self alloc] initWithAttributes:attributes] autorelease];
 }
 
 + (NSMutableArray *)findWithSQL:(NSString *)sql {
@@ -58,7 +59,7 @@ static id adapter;
     NSArray *rows = [[self connection] executeQuery:sql];
     
     for(NSDictionary *values in rows)
-        [objectiveRecords addObject:[self initWithAttributes:values]];
+        [objectiveRecords addObject:[self recordWithAttributes:values]];
     
     return objectiveRecords;
 }
