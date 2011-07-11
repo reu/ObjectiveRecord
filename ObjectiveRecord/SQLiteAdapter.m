@@ -94,7 +94,7 @@
 
 // This is a terrible approach, but I was getting repeating errors using PRAGMA table_info(tableName)
 - (NSArray *)columnsForTable:(NSString *)tableName {
-    SQLiteStatement *statement = [[SQLiteStatement alloc] initWithDatabase:database andQuery:[NSString stringWithFormat:@"SELECT * FROM %@", tableName]];
+    SQLiteStatement *statement = [[SQLiteStatement alloc] initWithDatabase:database andQuery:[NSString stringWithFormat:@"SELECT * FROM %@ LIMIT 1", tableName]];
     
     NSArray *columns = [statement columns];
     
