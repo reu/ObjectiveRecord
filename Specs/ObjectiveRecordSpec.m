@@ -58,6 +58,16 @@ describe(@"initWithAttributes", ^{
     });
 });
 
+describe(@"save", ^{
+    it(@"persists a record in the database", ^{
+        User *user = [User new];
+        user.name = @"Nemo";
+        [user save];
+        
+        [[[User findWithSQL:@"SELECT * FROM user where name = 'Nemo'"] should] haveCountOf:1];
+    });
+});
+
 describe(@"findWithSQL", ^{
     [[User connection] executeQuery:@"INSERT INTO user (name) VALUES ('Rodrigo')"];
     [[User connection] executeQuery:@"INSERT INTO user (name) VALUES ('Marília')"];

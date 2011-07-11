@@ -11,9 +11,10 @@
 // Class variable.
 static id adapter;
 
-@interface ObjectiveRecord()
+@interface ObjectiveRecord(private)
 
 + (NSString *)pathToDb;
+- (void)create;
 
 @end
 
@@ -65,8 +66,36 @@ static id adapter;
     return [[self connection] columnsForTable:[self tableName]];
 }
 
+- (void)save {
+    [self create];
+}
+
 #pragma mark -
 #pragma mark Private methods
+
++ (NSArray *)columnNamesWithoutPrimaryKey {
+    NSMutableArray *columnNames = [NSMutableArray arrayWithArray:[self columnNames]];
+    [columnNames removeObjectAtIndex:0];
+    
+    return columnNames;
+}
+
+// Of course we should use prepared statements here, but this was the fastest implementation for the proof of concept
+- (void)create {
+    NSArray *columnNames = [[self class] columnNamesWithoutPrimaryKey];
+    NSMutableArray *values = [NSMutableArray array];
+    
+    for (NSString *column in columnNames) {
+        [values addObject:[NSString stringWithFormat:@"'%@'", [self valueForKey:column]]];
+    }
+    
+    NSString *sql = [NSString stringWithFormat:@"INSERT INTO %@ (%@) VALUES (%@)", 
+                     [[self class] tableName], 
+                     [columnNames componentsJoinedByString:@","],
+                     [values componentsJoinedByString:@","]];
+    
+    [[[self class] connection] executeQuery:sql];
+}
 
 + (NSString *)pathToDb {
     //Having a hard time making these paths work during test.
