@@ -119,6 +119,7 @@
 
 - (void)dealloc {
     sqlite3_close(database);
+    [super dealloc];
 }
 
 
