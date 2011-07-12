@@ -176,14 +176,14 @@ static id adapter;
     
     NSDictionary *config = [[NSDictionary alloc] initWithContentsOfFile:plistPath];
     
-    NSString *dbName = [config valueForKey:@"database"];
+    NSString *dbName = [NSString stringWithString:[config valueForKey:@"database"]];
     
     [config release];
     
     if (!dbName || [dbName isEqualToString:@":memory:"])
         return dbName;
 
-    return [NSString stringWithFormat:@"%@/%@.db", [NSBundle mainBundle], dbName];
+    return [[NSBundle mainBundle] pathForResource:dbName ofType:@"db"];
 }
 
 #pragma mark -
