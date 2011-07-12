@@ -5,7 +5,7 @@
 
 #import <Foundation/Foundation.h>
 #import <sqlite3.h>
-#import <ObjectiveRecordAdapter.h>
+#import "ObjectiveRecordAdapter.h"
 
 @interface SQLiteAdapter : NSObject <ObjectiveRecordAdapter> {
     sqlite3 *database;
