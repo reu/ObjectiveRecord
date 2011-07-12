@@ -190,6 +190,8 @@ static id adapter;
 #pragma mark Memory management
 
 - (void) dealloc {
+    [primaryKey release];
+
     [super dealloc];
 }
 
