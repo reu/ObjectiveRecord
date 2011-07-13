@@ -234,6 +234,31 @@ describe(@"save", ^{
     });
 });
 
+describe(@"destroy", ^{
+    __block User *user;
+    
+    context(@"when the record exists on the database", ^{
+        beforeEach(^{
+            user = [User new];
+            [user save];
+        });
+        
+        it(@"destroys it", ^{
+            [user destroy];
+            [[[User findAllWithConditions:[NSString stringWithFormat:@"id = '%@'", [user primaryKey]]] should] haveCountOf:0];
+        });
+        
+        it(@"return true the record is successfully destroyed", ^{
+            [[theValue([user destroy]) should] beTrue];
+        });
+        
+        it(@"return true the record is not successfully destroyed", ^{
+            [User stub:@selector(tableName) andReturn:@"invalid table name"];
+            [[theValue([user destroy]) should] beFalse];
+        });
+    });
+});
+
 describe(@"searching for records", ^{
     describe(@"findWithSQL", ^{
         [[User connection] executeQuery:@"DELETE FROM user"];

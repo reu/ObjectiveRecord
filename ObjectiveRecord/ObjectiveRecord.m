@@ -125,6 +125,18 @@ static id adapter;
     return YES;
 }
 
+- (BOOL)destroy {
+    NSString *sql = [NSString stringWithFormat:@"DELETE FROM %@ WHERE id = ?", [[self class] tableName]];
+    
+    @try {
+        [[[self class] connection] executeQueryWithParameters:sql, [self primaryKey]];
+    }
+    @catch (NSException * e) {
+        return NO;
+    }
+    
+    return YES;
+}
 
 
 #pragma mark -

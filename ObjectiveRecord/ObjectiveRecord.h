@@ -25,6 +25,7 @@
 
 - (BOOL)isNewRecord;
 - (BOOL)save;
+- (BOOL)destroy;
 
 @property (nonatomic, retain) NSNumber *primaryKey;
 
