@@ -108,7 +108,7 @@ describe(@"save", ^{
         
         it(@"returns false if it is not successfully saved", ^{
             User *user = [User new];
-            [user stub:@selector(create) andReturn:NO];
+            [User stub:@selector(tableName) andReturn:@"invalid table name"];
             
             [[theValue([user save]) should] beFalse];
         });
@@ -143,7 +143,7 @@ describe(@"save", ^{
         
         it(@"returns false if it is not successfully saved", ^{
             User *user = [[User findWithSQL:@"SELECT * FROM user"] lastObject];
-            [user stub:@selector(update) andReturn:NO];
+            [User stub:@selector(tableName) andReturn:@"invalid table name"];
             
             [[theValue([user save]) should] beFalse];
         });

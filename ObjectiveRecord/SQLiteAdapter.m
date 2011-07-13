@@ -131,11 +131,14 @@
     
     NSDictionary *row;
     
-    while ((row = [statement step])) {
-        [rows addObject:row];
+    @try {
+        while ((row = [statement step])) {
+            [rows addObject:row];
+        }
     }
-    
-    [statement release];
+    @finally {
+        [statement release];
+    }
     
     return rows;
 }
