@@ -61,6 +61,16 @@ static id adapter;
     return objectiveRecords;
 }
 
++ (NSMutableArray *)findAll {
+    NSMutableArray *objectiveRecords = [NSMutableArray array];
+    NSArray *rows = [[self connection] executeQuery:[NSString stringWithFormat:@"SELECT * FROM %@", [self tableName]]];
+
+    for(NSDictionary *values in rows)
+        [objectiveRecords addObject:[self recordWithAttributes:values]];
+
+    return objectiveRecords;
+}
+
 + (id)connection {
     if (!adapter)
         adapter = [[SQLiteAdapter alloc] initWithPath:[self pathToDb]];
