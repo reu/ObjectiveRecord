@@ -14,7 +14,8 @@
 - (id)initWithAttributes:(NSDictionary *)attributes;
 + (id)recordWithAttributes:(NSDictionary *)attributes;
 
-+ (NSArray *)findWithSQL:(NSString *)sql;
++ (NSMutableArray *)findWithSQL:(NSString *)sql;
++ (NSMutableArray *)findAll;
 + (id <ObjectiveRecordAdapter>)connection;
 
 + (NSString *)tableName;

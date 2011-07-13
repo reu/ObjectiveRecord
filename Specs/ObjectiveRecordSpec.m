@@ -234,6 +234,21 @@ describe(@"findWithSQL", ^{
     });
 });
 
+describe(@"findAll", ^{
+    [[User connection] executeQuery:@"DELETE FROM user"];
+    [[User connection] executeQuery:@"INSERT INTO user (name) VALUES ('Keyboard cat')"];
+    [[User connection] executeQuery:@"INSERT INTO user (name) VALUES ('Leeroy Jenkins')"];
+
+    context(@"searching for all records", ^{
+        __block NSArray *users = [User findAll];
+
+        it(@"successfully finds all users", ^{
+            [[users should] haveCountOf:2];
+        });
+
+    });
+});
+
 describe(@"tableName", ^{
     it(@"is the lowercase class name", ^{
         [[[User tableName] should] equal:@"user"];
