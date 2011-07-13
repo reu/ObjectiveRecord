@@ -58,7 +58,20 @@ static id adapter;
 
 + (NSMutableArray *)findAll {
     NSString *query = [NSString stringWithFormat:@"SELECT * FROM %@", [self tableName]];
+
     return [self packRecordsForRows:[[self connection] executeQuery:query]];
+}
+
++ (NSMutableArray *)findAllWithConditions:(NSString *)conditions {
+    NSString *query = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE %@", [self tableName], conditions];
+
+    return [self packRecordsForRows:[[self connection] executeQuery:query]];
+}
+
++ (NSMutableArray *)findAllWithConditions:(NSString *)conditions andParameters:(NSArray *)parameters {
+    NSString *query = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE %@", [self tableName], conditions];
+
+    return [self packRecordsForRows:[[self connection] executeQuery:query withParameters:parameters]];
 }
 
 + (id)connection {
