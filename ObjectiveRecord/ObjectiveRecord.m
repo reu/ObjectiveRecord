@@ -12,8 +12,8 @@ static id adapter;
 
 + (NSString *)pathToDb;
 + (NSMutableArray *)packRecordsForRows:(NSArray *)rows;
-- (void)create;
-- (void)update;
+- (BOOL)create;
+- (BOOL)update;
 
 @end
 
@@ -98,12 +98,17 @@ static id adapter;
     }
 }
 
-- (void)save {
+- (BOOL)save {
     if ([self isNewRecord]) {
         [self beforeCreate];
         [self beforeSave];
         
-        [self create];
+        @try {
+            if (![self create]) 
+                return NO;
+        } @catch (NSException *error) {
+            return NO;
+        }
         
         [self afterCreate];
         [self afterSave];
@@ -111,12 +116,17 @@ static id adapter;
         [self beforeUpdate];
         [self beforeSave];
         
-        [self update];
+        if (![self update]) 
+            return NO;
         
         [self afterUpdate];
         [self afterSave];
     }
+    
+    return YES;
 }
+
+
 
 #pragma mark -
 #pragma mark Callbacks
@@ -138,7 +148,7 @@ static id adapter;
     return columnNames;
 }
 
-- (void)create {
+- (BOOL)create {
     NSArray *columnNames = [[self class] columnNamesWithoutPrimaryKey];
     
     NSMutableArray *bindings = [NSMutableArray array];
@@ -155,12 +165,19 @@ static id adapter;
                      [columnNames componentsJoinedByString:@","],
                      [bindings componentsJoinedByString:@","]];
     
-    [[[self class] connection] executeQuery:sql withParameters:values];
+    @try {
+        [[[self class] connection] executeQuery:sql withParameters:values];
+    }
+    @catch (NSException *error) {
+        return NO;
+    }
     
     [self setValue:[NSNumber numberWithInteger:[[[self class] connection] lastInsertId]] forKey:@"primaryKey"];
+    
+    return YES;
 }
 
-- (void)update {
+- (BOOL)update {
     NSArray *columnNames = [[self class] columnNamesWithoutPrimaryKey];
     
     NSMutableArray *bindings = [NSMutableArray array];
@@ -178,7 +195,14 @@ static id adapter;
                      [bindings componentsJoinedByString:@","],
                      [self primaryKey]];
     
-    [[[self class] connection] executeQuery:sql withParameters:values];
+    @try {
+        [[[self class] connection] executeQuery:sql withParameters:values];
+    }
+    @catch (NSException *error) {
+        return NO;
+    }
+    
+    return YES;
 }
 
 + (NSString *)pathToDb {

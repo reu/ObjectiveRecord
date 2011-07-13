@@ -101,6 +101,18 @@ describe(@"save", ^{
             [[[User findWithSQL:@"SELECT * FROM user where name = 'Nemo'"] should] haveCountOf:1];
         });
         
+        it(@"returns true if it is successfully saved", ^{
+            User *user = [User new];
+            [[theValue([user save]) should] beTrue];
+        });
+        
+        it(@"returns false if it is not successfully saved", ^{
+            User *user = [User new];
+            [user stub:@selector(create) andReturn:NO];
+            
+            [[theValue([user save]) should] beFalse];
+        });
+        
         it(@"sets the primary key of the recentyle created record", ^{
             User *user = [User new];
             user.name = @"Anakin";
@@ -120,6 +132,20 @@ describe(@"save", ^{
             
             [[[User findWithSQL:@"SELECT * FROM user where name = 'Keyra'"] should] haveCountOf:1];
             [[[User findWithSQL:@"SELECT * FROM user where name = 'Keira'"] should] haveCountOf:0];
+        });
+        
+        it(@"returns true if it is successfully saved", ^{
+            User *user = [[User findWithSQL:@"SELECT * FROM user"] lastObject];
+            user.name = @"Keyra";
+            
+            [[theValue([user save]) should] beTrue];
+        });
+        
+        it(@"returns false if it is not successfully saved", ^{
+            User *user = [[User findWithSQL:@"SELECT * FROM user"] lastObject];
+            [user stub:@selector(update) andReturn:NO];
+            
+            [[theValue([user save]) should] beFalse];
         });
     });
     

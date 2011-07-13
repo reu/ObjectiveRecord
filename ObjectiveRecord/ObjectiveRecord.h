@@ -24,7 +24,7 @@
 + (NSArray *)columnNames;
 
 - (BOOL)isNewRecord;
-- (void)save;
+- (BOOL)save;
 
 @property (nonatomic, retain) NSNumber *primaryKey;
 
