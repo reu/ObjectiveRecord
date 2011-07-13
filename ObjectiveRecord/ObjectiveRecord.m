@@ -11,6 +11,7 @@ static id adapter;
 @interface ObjectiveRecord(private)
 
 + (NSString *)pathToDb;
++ (NSMutableArray *)packRecordsForRows:(NSArray *)rows;
 - (void)create;
 - (void)update;
 
@@ -52,23 +53,12 @@ static id adapter;
 }
 
 + (NSMutableArray *)findWithSQL:(NSString *)sql {
-    NSMutableArray *objectiveRecords = [NSMutableArray array];
-    NSArray *rows = [[self connection] executeQuery:sql];
-    
-    for(NSDictionary *values in rows)
-        [objectiveRecords addObject:[self recordWithAttributes:values]];
-    
-    return objectiveRecords;
+    return [self packRecordsForRows:[[self connection] executeQuery:sql]];
 }
 
 + (NSMutableArray *)findAll {
-    NSMutableArray *objectiveRecords = [NSMutableArray array];
-    NSArray *rows = [[self connection] executeQuery:[NSString stringWithFormat:@"SELECT * FROM %@", [self tableName]]];
-
-    for(NSDictionary *values in rows)
-        [objectiveRecords addObject:[self recordWithAttributes:values]];
-
-    return objectiveRecords;
+    NSString *query = [NSString stringWithFormat:@"SELECT * FROM %@", [self tableName]];
+    return [self packRecordsForRows:[[self connection] executeQuery:query]];
 }
 
 + (id)connection {
@@ -194,6 +184,18 @@ static id adapter;
         return dbName;
 
     return [[NSBundle mainBundle] pathForResource:dbName ofType:@"db"];
+}
+
++ (NSMutableArray *)packRecordsForRows:(NSArray *)rows {
+    NSMutableArray *objectiveRecords = [NSMutableArray array];
+
+    if (!rows)
+        return objectiveRecords;
+
+    for(NSDictionary *attributes in rows)
+        [objectiveRecords addObject:[self recordWithAttributes:attributes]];
+
+    return objectiveRecords;
 }
 
 #pragma mark -
