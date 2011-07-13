@@ -52,23 +52,23 @@ static id adapter;
     return [[[self alloc] initWithAttributes:attributes] autorelease];
 }
 
-+ (NSMutableArray *)findWithSQL:(NSString *)sql {
++ (NSArray *)findWithSQL:(NSString *)sql {
     return [self packRecordsForRows:[[self connection] executeQuery:sql]];
 }
 
-+ (NSMutableArray *)findAll {
++ (NSArray *)findAll {
     NSString *query = [NSString stringWithFormat:@"SELECT * FROM %@", [self tableName]];
 
     return [self packRecordsForRows:[[self connection] executeQuery:query]];
 }
 
-+ (NSMutableArray *)findAllWithConditions:(NSString *)conditions {
++ (NSArray *)findAllWithConditions:(NSString *)conditions {
     NSString *query = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE %@", [self tableName], conditions];
 
     return [self packRecordsForRows:[[self connection] executeQuery:query]];
 }
 
-+ (NSMutableArray *)findAllWithConditions:(NSString *)conditions andParameters:(NSArray *)parameters {
++ (NSArray *)findAllWithConditions:(NSString *)conditions andParameters:(NSArray *)parameters {
     NSString *query = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE %@", [self tableName], conditions];
 
     return [self packRecordsForRows:[[self connection] executeQuery:query withParameters:parameters]];

@@ -14,10 +14,10 @@
 - (id)initWithAttributes:(NSDictionary *)attributes;
 + (id)recordWithAttributes:(NSDictionary *)attributes;
 
-+ (NSMutableArray *)findWithSQL:(NSString *)sql;
-+ (NSMutableArray *)findAll;
-+ (NSMutableArray *)findAllWithConditions:(NSString *)conditions;
-+ (NSMutableArray *)findAllWithConditions:(NSString *)conditions andParameters:(NSArray *)parameters;
++ (NSArray *)findWithSQL:(NSString *)sql;
++ (NSArray *)findAll;
++ (NSArray *)findAllWithConditions:(NSString *)conditions;
++ (NSArray *)findAllWithConditions:(NSString *)conditions andParameters:(NSArray *)parameters;
 + (id <ObjectiveRecordAdapter>)connection;
 
 + (NSString *)tableName;
