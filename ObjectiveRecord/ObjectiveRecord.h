@@ -16,6 +16,8 @@
 
 + (NSMutableArray *)findWithSQL:(NSString *)sql;
 + (NSMutableArray *)findAll;
++ (NSMutableArray *)findAllWithConditions:(NSString *)conditions;
++ (NSMutableArray *)findAllWithConditions:(NSString *)conditions andParameters:(NSArray *)parameters;
 + (id <ObjectiveRecordAdapter>)connection;
 
 + (NSString *)tableName;

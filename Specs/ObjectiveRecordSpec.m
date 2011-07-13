@@ -208,44 +208,61 @@ describe(@"save", ^{
     });
 });
 
-describe(@"findWithSQL", ^{
-    [[User connection] executeQuery:@"DELETE FROM user"];
-    [[User connection] executeQuery:@"INSERT INTO user (name) VALUES ('Rodrigo')"];
-    [[User connection] executeQuery:@"INSERT INTO user (name) VALUES ('Marília')"];
-    
-    context(@"searching for Rodrigo", ^{
-        __block NSArray *users = [User findWithSQL:@"SELECT * FROM user where name = 'Rodrigo'"];
+describe(@"searching for records", ^{
+    describe(@"findWithSQL", ^{
+        [[User connection] executeQuery:@"DELETE FROM user"];
+        [[User connection] executeQuery:@"INSERT INTO user (name) VALUES ('Rodrigo')"];
+        [[User connection] executeQuery:@"INSERT INTO user (name) VALUES ('Marília')"];
+        [[User connection] executeQuery:@"INSERT INTO user (name) VALUES ('Keyboard cat')"];
+        [[User connection] executeQuery:@"INSERT INTO user (name) VALUES ('Guitar cat')"];
         
-        it(@"successfully finds one record", ^{
-            [[users should] haveCountOf:1];
-        });
-        
-        context(@"user Rodrigo's attributes", ^{
-            __block User *user = [users lastObject];
+        context(@"searching for Rodrigo", ^{
+            __block NSArray *users = [User findWithSQL:@"SELECT * FROM user where name = 'Rodrigo'"];
             
-            it(@"has a name", ^{
-                [[[user name] should] equal:@"Rodrigo"];
+            it(@"successfully finds one record", ^{
+                [[users should] haveCountOf:1];
             });
             
-            it(@"has a primary key", ^{
-                [[[user primaryKey] should] equal:[NSNumber numberWithInt:1]];
+            context(@"user Rodrigo's attributes", ^{
+                __block User *user = [users lastObject];
+
+                it(@"has a name", ^{
+                    [[[user name] should] equal:@"Rodrigo"];
+                });
+
+                it(@"has a primary key", ^{
+                    [[[user primaryKey] should] equal:[NSNumber numberWithInt:1]];
+                });
             });
         });
     });
-});
 
-describe(@"findAll", ^{
-    [[User connection] executeQuery:@"DELETE FROM user"];
-    [[User connection] executeQuery:@"INSERT INTO user (name) VALUES ('Keyboard cat')"];
-    [[User connection] executeQuery:@"INSERT INTO user (name) VALUES ('Leeroy Jenkins')"];
+    describe(@"findAll", ^{
+        context(@"searching for all records", ^{
+            __block NSArray *users = [User findAll];
 
-    context(@"searching for all records", ^{
-        __block NSArray *users = [User findAll];
+            it(@"successfully finds all users", ^{
+                [[users should] haveCountOf:4];
+            });
+        });
+    });
 
-        it(@"successfully finds all users", ^{
-            [[users should] haveCountOf:2];
+    context(@"searching for the cats", ^{
+        describe(@"findAllWithConditions", ^{
+            __block NSArray *users = [User findAllWithConditions:@"name LIKE '%cat%'"];
+
+            it(@"successfully finds the cats", ^{
+                [[users should] haveCountOf:2];
+            });
         });
 
+        describe(@"findAllWithConditionsAndParameters", ^{
+            __block NSArray *users = [User findAllWithConditions:@"name LIKE ?" andParameters:[NSArray arrayWithObject:@"%cat%"]];
+
+            it(@"successfully finds the cats", ^{
+                [[users should] haveCountOf:2];
+            });
+        });
     });
 });
 
