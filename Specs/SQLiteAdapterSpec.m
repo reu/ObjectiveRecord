@@ -172,7 +172,7 @@ pending(@"lastInsertId", ^{
         [adapter executeQuery:@"CREATE TABLE jedis (id INTEGER PRIMARY KEY, name VARCHAR(255))"];
         [adapter executeQuery:@"INSERT INTO jedis (name) VALUES ('Luke')"];
         
-    //    [[[adapter lastInsertId] should] equal:1];
+        [[theValue([adapter lastInsertId]) should] equal:theValue(2)];
     });
     
     afterAll(^{
