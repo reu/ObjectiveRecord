@@ -98,7 +98,7 @@ static id adapter;
 // TODO: make this smarter, perhaps using an property newRecord as a cache or something
 - (BOOL)isNewRecord {
     if ([self primaryKey]) {
-        return [[[self class] findWithSQL:[NSString stringWithFormat:@"SELECT id FROM %@ WHERE id = %@ LIMIT 1", [[self class] tableName], [self primaryKey]]] count] == 0;
+        return [[self class] find:(NSUInteger)[self primaryKey]] != nil;
     } else {
         return YES;
     }
