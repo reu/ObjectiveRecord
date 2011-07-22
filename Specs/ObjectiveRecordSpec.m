@@ -270,6 +270,10 @@ describe(@"searching for records", ^{
             [[[[User find:24] name] should] equal:@"Guilherme"];
         });
         
+        it(@"returns nil if no record is found", ^{
+            [[User find:30] shouldBeNil];
+        });
+        
         afterAll(^{
             [[User connection] executeQuery:@"DELETE FROM user"];
         });
