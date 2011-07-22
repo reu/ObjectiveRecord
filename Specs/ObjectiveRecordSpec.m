@@ -342,6 +342,12 @@ describe(@"tableName", ^{
     });
 });
 
+describe(@"primaryKeyColumnName", ^{
+    it(@"is the id column by default", ^{
+        [[[User primaryKeyColumnName] should] equal:@"id"];
+    });
+});
+
 describe(@"columnNames", ^{
     it(@"contains two columns", ^{
         [[[User columnNames] should] haveCountOf:2];

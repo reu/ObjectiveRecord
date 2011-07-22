@@ -35,7 +35,7 @@ static id adapter;
 - (id)initWithAttributes:(NSDictionary *)attributes {
     if (self = [super init]) {
         for(NSString *key in attributes) {
-            NSString *normalizedKey = [key isEqualToString:@"id"] ? @"primaryKey": key;
+            NSString *normalizedKey = [key isEqualToString:[[self class] primaryKeyColumnName]] ? @"primaryKey": key;
             
             if ([self respondsToSelector:NSSelectorFromString(normalizedKey)]) {
                 [self setValue:[attributes objectForKey:key] forKey:normalizedKey];
@@ -57,7 +57,7 @@ static id adapter;
 }
 
 + (id)find:(NSUInteger)recordId {
-    NSString *query = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE id = ?", [self tableName]];
+    NSString *query = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE %@ = ?", [self tableName], [self primaryKeyColumnName]];
     
     return [[self packRecordsForRows:[[self connection] executeQueryWithParameters:query, [NSNumber numberWithInt:recordId]]] lastObject];
 }
@@ -93,6 +93,10 @@ static id adapter;
 
 + (NSArray *)columnNames {
     return [[self connection] columnsForTable:[self tableName]];
+}
+
++ (NSString *)primaryKeyColumnName {
+    return @"id";
 }
 
 // TODO: make this smarter, perhaps using an property newRecord as a cache or something
@@ -132,7 +136,7 @@ static id adapter;
 }
 
 - (BOOL)destroy {
-    NSString *sql = [NSString stringWithFormat:@"DELETE FROM %@ WHERE id = ?", [[self class] tableName]];
+    NSString *sql = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ = ?", [[self class] tableName], [[self class] primaryKeyColumnName]];
     
     @try {
         [[[self class] connection] executeQueryWithParameters:sql, [self primaryKey]];
@@ -207,9 +211,10 @@ static id adapter;
         [bindings addObject:[NSString stringWithFormat:@"%@ = ?", column]];
     }
     
-    NSString *sql = [NSString stringWithFormat:@"UPDATE %@ SET %@ WHERE id = %@", 
+    NSString *sql = [NSString stringWithFormat:@"UPDATE %@ SET %@ WHERE %@ = %@", 
                      [[self class] tableName], 
                      [bindings componentsJoinedByString:@","],
+                     [[self class] primaryKeyColumnName],
                      [self primaryKey]];
     
     @try {

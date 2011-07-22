@@ -23,6 +23,7 @@
 
 + (NSString *)tableName;
 + (NSArray *)columnNames;
++ (NSString *)primaryKeyColumnName;
 
 - (BOOL)isNewRecord;
 - (BOOL)save;
