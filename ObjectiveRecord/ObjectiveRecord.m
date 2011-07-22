@@ -56,6 +56,12 @@ static id adapter;
     return [self packRecordsForRows:[[self connection] executeQuery:sql]];
 }
 
++ (id)find:(NSUInteger)recordId {
+    NSString *query = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE id = ?", [self tableName]];
+    
+    return [[self packRecordsForRows:[[self connection] executeQueryWithParameters:query, [NSNumber numberWithInt:recordId]]] lastObject];
+}
+
 + (NSMutableArray *)findAll {
     NSString *query = [NSString stringWithFormat:@"SELECT * FROM %@", [self tableName]];
 

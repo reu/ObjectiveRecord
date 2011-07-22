@@ -14,6 +14,7 @@
 - (id)initWithAttributes:(NSDictionary *)attributes;
 + (id)recordWithAttributes:(NSDictionary *)attributes;
 
++ (id)find:(NSUInteger)recordId;
 + (NSMutableArray *)findWithSQL:(NSString *)sql;
 + (NSMutableArray *)findAll;
 + (NSMutableArray *)findAllWithConditions:(NSString *)conditions;

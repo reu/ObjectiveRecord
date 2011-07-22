@@ -260,6 +260,21 @@ describe(@"destroy", ^{
 });
 
 describe(@"searching for records", ^{
+    describe(@"find", ^{
+        beforeEach(^{
+            [[User connection] executeQuery:@"INSERT INTO user (id, name) VALUES (10, 'Rodrigo')"];
+            [[User connection] executeQuery:@"INSERT INTO user (id, name) VALUES (24, 'Guilherme')"];
+        });
+        
+        it(@"finds a record by its id", ^{
+            [[[[User find:24] name] should] equal:@"Guilherme"];
+        });
+        
+        afterAll(^{
+            [[User connection] executeQuery:@"DELETE FROM user"];
+        });
+    });
+    
     describe(@"findWithSQL", ^{
         [[User connection] executeQuery:@"DELETE FROM user"];
         [[User connection] executeQuery:@"INSERT INTO user (name) VALUES ('Rodrigo')"];
