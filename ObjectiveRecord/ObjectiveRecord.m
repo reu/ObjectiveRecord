@@ -109,27 +109,26 @@ static id adapter;
 }
 
 - (BOOL)save {
-    @try {
-        if ([self isNewRecord]) {
-            [self beforeCreate];
-            [self beforeSave];
-            
-            [self create];
-            
-            [self afterCreate];
-            [self afterSave];
-        } else {
-            [self beforeUpdate];
-            [self beforeSave];
-            
-            [self update];
-            
-            [self afterUpdate];
-            [self afterSave];
+    if ([self isNewRecord]) {
+        [self beforeCreate];
+        [self beforeSave];
+        
+        if (![self create]) {
+            return NO;
+        }       
+        
+        [self afterCreate];
+        [self afterSave];
+    } else {
+        [self beforeUpdate];
+        [self beforeSave];
+        
+        if (![self update]) {
+            return NO;
         }
-    }
-    @catch (NSException * e) {
-        return NO;
+        
+        [self afterUpdate];
+        [self afterSave];
     }
     
     return YES;
